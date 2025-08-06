@@ -14,9 +14,6 @@
 		20BCB0D02E43039E000D43DC /* WeatherApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 20BCB0CE2E43039E000D43DC /* WeatherApp.xcdatamodeld */; };
 		20BCB0D22E4303A1000D43DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20BCB0D12E4303A1000D43DC /* Assets.xcassets */; };
 		20BCB0D52E4303A1000D43DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20BCB0D32E4303A1000D43DC /* LaunchScreen.storyboard */; };
-		20BCB0E02E4303A2000D43DC /* WeatherAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCB0DF2E4303A2000D43DC /* WeatherAppTests.swift */; };
-		20BCB0EA2E4303A2000D43DC /* WeatherAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCB0E92E4303A2000D43DC /* WeatherAppUITests.swift */; };
-		20BCB0EC2E4303A2000D43DC /* WeatherAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCB0EB2E4303A2000D43DC /* WeatherAppUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,10 +44,7 @@
 		20BCB0D42E4303A1000D43DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		20BCB0D62E4303A1000D43DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20BCB0DB2E4303A2000D43DC /* WeatherAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		20BCB0DF2E4303A2000D43DC /* WeatherAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppTests.swift; sourceTree = "<group>"; };
 		20BCB0E52E4303A2000D43DC /* WeatherAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		20BCB0E92E4303A2000D43DC /* WeatherAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppUITests.swift; sourceTree = "<group>"; };
-		20BCB0EB2E4303A2000D43DC /* WeatherAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,12 +72,60 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		206D0B312E432AEA00827E46 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		206D0B322E432AF800827E46 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				20BCB0D32E4303A1000D43DC /* LaunchScreen.storyboard */,
+				20BCB0CB2E43039E000D43DC /* Main.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		206D0B332E432B0700827E46 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				20BCB0C92E43039E000D43DC /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		206D0B342E432B2700827E46 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		206D0B352E432B2E00827E46 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				20BCB0D12E4303A1000D43DC /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		206D0B362E432B3B00827E46 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				20BCB0C52E43039E000D43DC /* AppDelegate.swift */,
+				20BCB0C72E43039E000D43DC /* SceneDelegate.swift */,
+				20BCB0CE2E43039E000D43DC /* WeatherApp.xcdatamodeld */,
+				20BCB0D62E4303A1000D43DC /* Info.plist */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		20BCB0B92E43039E000D43DC = {
 			isa = PBXGroup;
 			children = (
 				20BCB0C42E43039E000D43DC /* WeatherApp */,
-				20BCB0DE2E4303A2000D43DC /* WeatherAppTests */,
-				20BCB0E82E4303A2000D43DC /* WeatherAppUITests */,
 				20BCB0C32E43039E000D43DC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,33 +143,14 @@
 		20BCB0C42E43039E000D43DC /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
-				20BCB0C52E43039E000D43DC /* AppDelegate.swift */,
-				20BCB0C72E43039E000D43DC /* SceneDelegate.swift */,
-				20BCB0C92E43039E000D43DC /* ViewController.swift */,
-				20BCB0CB2E43039E000D43DC /* Main.storyboard */,
-				20BCB0D12E4303A1000D43DC /* Assets.xcassets */,
-				20BCB0D32E4303A1000D43DC /* LaunchScreen.storyboard */,
-				20BCB0D62E4303A1000D43DC /* Info.plist */,
-				20BCB0CE2E43039E000D43DC /* WeatherApp.xcdatamodeld */,
+				206D0B312E432AEA00827E46 /* Models */,
+				206D0B322E432AF800827E46 /* Views */,
+				206D0B332E432B0700827E46 /* Controllers */,
+				206D0B342E432B2700827E46 /* Services */,
+				206D0B352E432B2E00827E46 /* Resources */,
+				206D0B362E432B3B00827E46 /* Core */,
 			);
 			path = WeatherApp;
-			sourceTree = "<group>";
-		};
-		20BCB0DE2E4303A2000D43DC /* WeatherAppTests */ = {
-			isa = PBXGroup;
-			children = (
-				20BCB0DF2E4303A2000D43DC /* WeatherAppTests.swift */,
-			);
-			path = WeatherAppTests;
-			sourceTree = "<group>";
-		};
-		20BCB0E82E4303A2000D43DC /* WeatherAppUITests */ = {
-			isa = PBXGroup;
-			children = (
-				20BCB0E92E4303A2000D43DC /* WeatherAppUITests.swift */,
-				20BCB0EB2E4303A2000D43DC /* WeatherAppUITestsLaunchTests.swift */,
-			);
-			path = WeatherAppUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,7 +317,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20BCB0E02E4303A2000D43DC /* WeatherAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,8 +324,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20BCB0EA2E4303A2000D43DC /* WeatherAppUITests.swift in Sources */,
-				20BCB0EC2E4303A2000D43DC /* WeatherAppUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
