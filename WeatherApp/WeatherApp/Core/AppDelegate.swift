@@ -12,7 +12,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        print("App did finish launching")
+        debugPrint("App did finish launching")
         setupInitialConfigurations()
         return true
     }
@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setupInitialConfigurations() {
-        print("Setting up initial configurations...")
+        debugPrint("Setting up initial configurations...")
     }
 
     lazy var persistentContainer: NSPersistentContainer = {
@@ -59,4 +59,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 }
-	
