@@ -18,6 +18,7 @@
 		20BCB0D02E43039E000D43DC /* WeatherApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 20BCB0CE2E43039E000D43DC /* WeatherApp.xcdatamodeld */; };
 		20BCB0D22E4303A1000D43DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20BCB0D12E4303A1000D43DC /* Assets.xcassets */; };
 		20BCB0D52E4303A1000D43DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20BCB0D32E4303A1000D43DC /* LaunchScreen.storyboard */; };
+		20DD3B4D2E43B7FC0052AF4C /* TabBarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DD3B4C2E43B7FC0052AF4C /* TabBarType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		20BCB0D62E4303A1000D43DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20BCB0DB2E4303A2000D43DC /* WeatherAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		20BCB0E52E4303A2000D43DC /* WeatherAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		20DD3B4C2E43B7FC0052AF4C /* TabBarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 				20BCB0C52E43039E000D43DC /* AppDelegate.swift */,
 				20BCB0C72E43039E000D43DC /* SceneDelegate.swift */,
 				20BCB0CE2E43039E000D43DC /* WeatherApp.xcdatamodeld */,
+				20DD3B4C2E43B7FC0052AF4C /* TabBarType.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				206D0B3A2E432F8300827E46 /* HomeViewController.swift in Sources */,
 				206D0B3C2E432F8F00827E46 /* WeatherViewController.swift in Sources */,
 				206D0B3E2E432F9C00827E46 /* FavoritesViewController.swift in Sources */,
+				20DD3B4D2E43B7FC0052AF4C /* TabBarType.swift in Sources */,
 				206D0B382E432F7500827E46 /* BaseViewController.swift in Sources */,
 				20BCB0D02E43039E000D43DC /* WeatherApp.xcdatamodeld in Sources */,
 				20BCB0C62E43039E000D43DC /* AppDelegate.swift in Sources */,

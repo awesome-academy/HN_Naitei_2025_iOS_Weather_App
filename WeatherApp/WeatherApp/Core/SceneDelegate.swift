@@ -43,59 +43,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func createTabBarController() -> UITabBarController {
         let tabBarController = UITabBarController()
         
-        let homeVC = createHomeViewController()
-        let weatherVC = createWeatherViewController()
-        let favoritesVC = createFavoritesViewController()
-        let settingsVC = createSettingsViewController()
+        let viewControllers = TabBarType.allCases.map { tabType in
+            createViewController(for: tabType)
+        }
         
-        tabBarController.viewControllers = [homeVC, weatherVC, favoritesVC, settingsVC]
-        
+        tabBarController.viewControllers = viewControllers
         setupTabBarAppearance(tabBarController)
         
         return tabBarController
     }
     
-    private func createHomeViewController() -> UINavigationController {
-        let homeVC = HomeViewController()
-        let navController = UINavigationController(rootViewController: homeVC)
+    private func createViewController(for tabType: TabBarType) -> UINavigationController {
+        let viewController: UIViewController
+        
+        switch tabType {
+        case .home:
+            viewController = HomeViewController()
+        case .weather:
+            viewController = WeatherViewController()
+        case .favorites:
+            viewController = FavoritesViewController()
+        case .settings:
+            viewController = SettingsViewController()
+        }
+        
+        let navController = UINavigationController(rootViewController: viewController)
         navController.tabBarItem = UITabBarItem(
-            title: "Home",
-            image: UIImage(systemName: "house"),
-            selectedImage: UIImage(systemName: "house.fill")
+            title: tabType.title,
+            image: tabType.image,
+            selectedImage: tabType.selectedImage
         )
-        return navController
-    }
-    
-    private func createWeatherViewController() -> UINavigationController {
-        let weatherVC = WeatherViewController()
-        let navController = UINavigationController(rootViewController: weatherVC)
-        navController.tabBarItem = UITabBarItem(
-            title: "Weather",
-            image: UIImage(systemName: "cloud.sun"),
-            selectedImage: UIImage(systemName: "cloud.sun.fill")
-        )
-        return navController
-    }
-    
-    private func createFavoritesViewController() -> UINavigationController {
-        let favoritesVC = FavoritesViewController()
-        let navController = UINavigationController(rootViewController: favoritesVC)
-        navController.tabBarItem = UITabBarItem(
-            title: "Favorites",
-            image: UIImage(systemName: "heart"),
-            selectedImage: UIImage(systemName: "heart.fill")
-        )
-        return navController
-    }
-    
-    private func createSettingsViewController() -> UINavigationController {
-        let settingsVC = SettingsViewController()
-        let navController = UINavigationController(rootViewController: settingsVC)
-        settingsVC.tabBarItem = UITabBarItem(
-            title: "Settings",
-            image: UIImage(systemName: "gear"),
-            selectedImage: UIImage(systemName: "gear.fill")
-        )
+        
         return navController
     }
     
