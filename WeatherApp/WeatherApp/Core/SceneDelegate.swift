@@ -58,7 +58,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         switch tabType {
         case .home:
-            viewController = HomeViewController()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            viewController = storyboard.instantiateViewController(withIdentifier: "HomeViewController")
         case .weather:
             viewController = WeatherViewController()
         case .favorites:
