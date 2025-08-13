@@ -23,8 +23,12 @@ struct CityLocation {
     
     var displayName: String {
         return [name, state, country]
+<<<<<<< HEAD
             .compactMap { $0 }
             .filter { !$0.isEmpty }
+=======
+            .filter { $0 != nil && $0?.isEmpty == false }
+>>>>>>> origin/develop
             .joined(separator: ", ")
     }
     
