@@ -23,6 +23,9 @@
 		20A1FF772E4C74500080A6D6 /* ForecastModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1FF742E4C74500080A6D6 /* ForecastModels.swift */; };
 		20A1FF802E4C82E80080A6D6 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1FF7F2E4C82E80080A6D6 /* WeatherService.swift */; };
 		20A1FF822E4C83B00080A6D6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1FF812E4C83B00080A6D6 /* NetworkManager.swift */; };
+		20A1FF842E4C92CD0080A6D6 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1FF832E4C92CD0080A6D6 /* DataManager.swift */; };
+		20A1FF862E4C92DD0080A6D6 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1FF852E4C92DD0080A6D6 /* CacheService.swift */; };
+		20A1FF882E4C930B0080A6D6 /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A1FF872E4C930B0080A6D6 /* BackgroundTaskManager.swift */; };
 		20BCB0C62E43039E000D43DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCB0C52E43039E000D43DC /* AppDelegate.swift */; };
 		20BCB0C82E43039E000D43DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCB0C72E43039E000D43DC /* SceneDelegate.swift */; };
 		20BCB0CD2E43039E000D43DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20BCB0CB2E43039E000D43DC /* Main.storyboard */; };
@@ -66,6 +69,9 @@
 		20A1FF742E4C74500080A6D6 /* ForecastModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastModels.swift; sourceTree = "<group>"; };
 		20A1FF7F2E4C82E80080A6D6 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		20A1FF812E4C83B00080A6D6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		20A1FF832E4C92CD0080A6D6 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		20A1FF852E4C92DD0080A6D6 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
+		20A1FF872E4C930B0080A6D6 /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
 		20BCB0C22E43039E000D43DC /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20BCB0C52E43039E000D43DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20BCB0C72E43039E000D43DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -165,6 +171,9 @@
 			children = (
 				20A1FF7F2E4C82E80080A6D6 /* WeatherService.swift */,
 				20A1FF812E4C83B00080A6D6 /* NetworkManager.swift */,
+				20A1FF832E4C92CD0080A6D6 /* DataManager.swift */,
+				20A1FF852E4C92DD0080A6D6 /* CacheService.swift */,
+				20A1FF872E4C930B0080A6D6 /* BackgroundTaskManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -364,8 +373,11 @@
 				20A1FF6F2E4C73F50080A6D6 /* String+Extensions.swift in Sources */,
 				20DD3B4D2E43B7FC0052AF4C /* TabBarType.swift in Sources */,
 				20A1FF6E2E4C73F50080A6D6 /* CoreDataService.swift in Sources */,
+				20A1FF862E4C92DD0080A6D6 /* CacheService.swift in Sources */,
+				20A1FF842E4C92CD0080A6D6 /* DataManager.swift in Sources */,
 				206D0B382E432F7500827E46 /* BaseViewController.swift in Sources */,
 				20A1FF802E4C82E80080A6D6 /* WeatherService.swift in Sources */,
+				20A1FF882E4C930B0080A6D6 /* BackgroundTaskManager.swift in Sources */,
 				20A1FF822E4C83B00080A6D6 /* NetworkManager.swift in Sources */,
 				20BCB0D02E43039E000D43DC /* WeatherApp.xcdatamodeld in Sources */,
 				20BCB0C62E43039E000D43DC /* AppDelegate.swift in Sources */,
