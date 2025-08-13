@@ -7,28 +7,42 @@
 
 import Foundation
 import CoreData
+import CoreLocation
 
-class CoreDataService {
+extension FavoriteCity {
     
-    func fetchAllFavorites(in context: NSManagedObjectContext) -> [FavoriteCity] {
-        let request: NSFetchRequest<FavoriteCity> = FavoriteCity.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \FavoriteCity.dateAdded, ascending: false)]
-        
-        do {
-            return try context.fetch(request)
-        } catch {
-            debugPrint("Error fetching favorites: \(error)")
-            return []
-        }
+    convenience init(from cityLocation: CityLocation, in context: NSManagedObjectContext) {
+        self.init(context: context)
+        self.name = cityLocation.name
+        self.country = cityLocation.country
+        self.state = cityLocation.state
+        self.latitude = cityLocation.coordinates.latitude
+        self.longitude = cityLocation.coordinates.longitude
+        self.dateAdded = Date()
     }
     
-    func delete(_ favorite: FavoriteCity, in context: NSManagedObjectContext) {
-        context.delete(favorite)
+    var displayName: String {
+        let components = [name, state, country]
+            .compactMap { $0 }
+            .filter { !$0.isEmpty }
+        return components.joined(separator: ", ")
     }
     
-    func save(context: NSManagedObjectContext) throws {
-        if context.hasChanges {
-            try context.save()
-        }
+    var coordinates: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    
+    var coordinatesString: String {
+        return String.formatCoordinates(latitude: latitude, longitude: longitude)
+    }
+    
+    func toCityLocation() -> CityLocation {
+        return CityLocation(
+            name: name ?? "",
+            country: country ?? "",
+            state: state,
+            latitude: latitude,
+            longitude: longitude
+        )
     }
 }
