@@ -22,14 +22,13 @@ struct CityLocation {
     }
     
     var displayName: String {
-        let components = [name, state, country]
-            .compactMap { $0 }
-            .filter { !$0.isEmpty }
-        return components.joined(separator: ", ")
+        return [name, state, country]
+            .filter { $0 != nil && $0?.isEmpty == false }
+            .joined(separator: ", ")
     }
     
     var coordinatesString: String {
-        return String.formatCoordinates(latitude: coordinates.latitude, longitude: coordinates.longitude)
+        return "\(coordinates.latitude.coordinateFormat), \(coordinates.longitude.coordinateFormat)"
     }
     
     func distance(from location: CLLocation) -> CLLocationDistance {

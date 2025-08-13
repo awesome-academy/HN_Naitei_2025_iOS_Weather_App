@@ -33,7 +33,7 @@ extension FavoriteCity {
     }
     
     var coordinatesString: String {
-        return String.formatCoordinates(latitude: latitude, longitude: longitude)
+        return "\(latitude.coordinateFormat), \(longitude.coordinateFormat)"
     }
     
     func toCityLocation() -> CityLocation {

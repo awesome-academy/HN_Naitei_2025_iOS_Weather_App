@@ -8,7 +8,13 @@
 import Foundation
 
 extension String {
-    static func formatCoordinates(latitude: Double, longitude: Double) -> String {
-        return String(format: "%.4f, %.4f", latitude, longitude)
+    var locationFormat: String {
+        return String(format: "%.4f", self)
+    }
+}
+
+extension Double {
+    var coordinateFormat: String {
+        return String(format: "%.4f", self)
     }
 }
