@@ -161,7 +161,7 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		206D0B362E432B3B00827E46 /* Core */ = {
+	206D0B362E432B3B00827E46 /* Core */ = {
 			isa = PBXGroup;
 			children = (
 				20BCB0C52E43039E000D43DC /* AppDelegate.swift */,
