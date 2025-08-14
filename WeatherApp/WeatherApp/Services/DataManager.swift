@@ -40,7 +40,7 @@ class DataManager {
                     return
                 }
                 
-                let _ = FavoriteCity(from: cityLocation, in: bgContext)
+                let favorite = FavoriteCity(from: cityLocation, in: bgContext)
                 
                 do {
                     try bgContext.save()
@@ -150,28 +150,3 @@ class DataManager {
     }
 }
 
-enum DataError: Error {
-    case duplicateEntry
-    case notFound
-    case saveFailed(Error)
-    case deleteFailed(Error)
-    case fetchFailed(Error)
-    case contextNotAvailable
-    
-    var localizedDescription: String {
-        switch self {
-        case .duplicateEntry:
-            return "City already exists in favorites"
-        case .notFound:
-            return "City not found"
-        case .saveFailed(let error):
-            return "Save failed: \(error.localizedDescription)"
-        case .deleteFailed(let error):
-            return "Delete failed: \(error.localizedDescription)"
-        case .fetchFailed(let error):
-            return "Fetch failed: \(error.localizedDescription)"
-        case .contextNotAvailable:
-            return "Data context not available"
-        }
-    }
-}

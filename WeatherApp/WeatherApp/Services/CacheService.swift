@@ -8,11 +8,11 @@
 import Foundation
 import SQLite3
 
-class CacheService {
-    static let shared = CacheService()
+class DatabaseService {
+    static let shared = DatabaseService()
     
     private var db: OpaquePointer?
-    private let cacheQueue = DispatchQueue(label: "com.weatherapp.cache", qos: .utility)
+    private let cacheQueue = DispatchQueue(label: "com.weatherapp.database", qos: .utility)
     
     private init() {
         setupDatabase()
@@ -23,9 +23,12 @@ class CacheService {
     }
     
     private func setupDatabase() {
-        let fileURL = try! FileManager.default
-            .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            .appendingPathComponent("WeatherCache.sqlite")
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("Failed to get documents directory")
+            return
+        }
+        
+        let fileURL = documentsDirectory.appendingPathComponent("WeatherCache.sqlite")
         
         if sqlite3_open(fileURL.path, &db) == SQLITE_OK {
             createTable()
