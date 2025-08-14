@@ -20,7 +20,7 @@ class HomeViewController: BaseViewController {
     }
     
     private func setupNavigationBar() {
-        title = "Home"
+        title = ""
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
