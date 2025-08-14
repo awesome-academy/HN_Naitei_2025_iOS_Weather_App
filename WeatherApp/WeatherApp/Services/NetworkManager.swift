@@ -50,29 +50,3 @@ class NetworkManager {
         task.resume()
     }
 }
-
-enum NetworkError: Error, LocalizedError {
-    case invalidURL
-    case requestFailed(Error)
-    case invalidResponse
-    case serverError(Int)
-    case noData
-    case decodingFailed
-    
-    var errorDescription: String? {
-        switch self {
-        case .invalidURL:
-            return "Invalid URL"
-        case .requestFailed(let error):
-            return "Request failed: \(error.localizedDescription)"
-        case .invalidResponse:
-            return "Invalid response"
-        case .serverError(let code):
-            return "Server error: \(code)"
-        case .noData:
-            return "No data received"
-        case .decodingFailed:
-            return "Failed to decode response"
-        }
-    }
-}
