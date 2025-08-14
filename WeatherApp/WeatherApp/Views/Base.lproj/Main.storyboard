@@ -102,7 +102,7 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="7mU-J5-cPg">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HourlyCell" id="7mU-J5-cPg" userLabel="HourlyCell">
                                                 <rect key="frame" x="0.0" y="57" width="82" height="122"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="yYf-RD-vKU">
@@ -158,6 +158,15 @@
                             <constraint firstItem="06w-om-xtb" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="59" id="iVA-rR-wc3"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cityNameLabel" destination="Yjb-0k-R0B" id="Qln-aJ-Khf"/>
+                        <outlet property="collectionView" destination="6Cg-YQ-HhJ" id="mHE-wq-ebf"/>
+                        <outlet property="highLowTemperatureLabel" destination="LfM-VP-nyq" id="iYi-fZ-r1U"/>
+                        <outlet property="hourlyWeeklySegmentedControl" destination="aE9-kt-UB4" id="ii4-jx-xaH"/>
+                        <outlet property="mainTemperatureLabel" destination="Tqg-Mi-K1l" id="6Iw-zB-AvP"/>
+                        <outlet property="weatherDescriptionLabel" destination="YdM-A0-KzW" id="JiF-jH-SSG"/>
+                        <outlet property="weatherIconImageView" destination="Ynn-K2-SKS" id="OgH-E3-hpd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
