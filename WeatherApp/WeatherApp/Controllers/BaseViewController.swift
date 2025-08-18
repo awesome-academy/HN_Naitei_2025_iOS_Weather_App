@@ -9,6 +9,8 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
+    var isLoading = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -19,6 +21,9 @@ class BaseViewController: UIViewController {
     }
     
     func showLoading() {
+        guard !isLoading else { return }
+        isLoading = true
+        
         DispatchQueue.main.async {
             if self.view.viewWithTag(1000) != nil {
                 return
@@ -52,6 +57,8 @@ class BaseViewController: UIViewController {
     }
     
     func hideLoading() {
+        isLoading = false
+        
         DispatchQueue.main.async {
             if let loadingView = self.view.viewWithTag(1000) {
                 loadingView.removeFromSuperview()
