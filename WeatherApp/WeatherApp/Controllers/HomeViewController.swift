@@ -12,6 +12,7 @@ class HomeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        setupForecastBackground()
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -80,9 +80,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vzF-ti-j2n" userLabel="Forecast Container View">
                                 <rect key="frame" x="0.0" y="552" width="393" height="300"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gd" translatesAutoresizingMaskIntoConstraints="NO" id="W6T-mB-6Px" userLabel="Forecast Background">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="300"/>
-                                    </imageView>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aE9-kt-UB4">
                                         <rect key="frame" x="20" y="25" width="353" height="32"/>
                                         <color key="backgroundColor" red="0.57414853570000002" green="0.57416242360000003" blue="0.57415497299999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -128,21 +125,15 @@
                                         </cells>
                                     </collectionView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="aE9-kt-UB4" firstAttribute="leading" secondItem="vzF-ti-j2n" secondAttribute="leading" constant="20" id="68E-Uy-Jsz"/>
-                                    <constraint firstAttribute="bottom" secondItem="W6T-mB-6Px" secondAttribute="bottom" id="6oO-76-S3u"/>
                                     <constraint firstAttribute="trailing" secondItem="6Cg-YQ-HhJ" secondAttribute="trailing" id="BFO-JB-thL"/>
                                     <constraint firstAttribute="bottom" secondItem="6Cg-YQ-HhJ" secondAttribute="bottom" id="O6Y-ia-tIp"/>
-                                    <constraint firstItem="W6T-mB-6Px" firstAttribute="leading" secondItem="vzF-ti-j2n" secondAttribute="leading" id="QVs-FG-diJ"/>
                                     <constraint firstItem="6Cg-YQ-HhJ" firstAttribute="top" secondItem="aE9-kt-UB4" secondAttribute="bottom" constant="8" id="Qb4-di-72o"/>
                                     <constraint firstItem="6Cg-YQ-HhJ" firstAttribute="leading" secondItem="vzF-ti-j2n" secondAttribute="leading" id="Rg8-ve-hIj"/>
                                     <constraint firstAttribute="trailing" secondItem="aE9-kt-UB4" secondAttribute="trailing" constant="20" id="Ypk-6G-PJe"/>
-                                    <constraint firstAttribute="trailing" secondItem="W6T-mB-6Px" secondAttribute="trailing" id="Z5t-lo-UhZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="W6T-mB-6Px" secondAttribute="trailing" id="bmY-xe-zeg"/>
-                                    <constraint firstItem="W6T-mB-6Px" firstAttribute="top" secondItem="vzF-ti-j2n" secondAttribute="top" id="ggq-Mf-P70"/>
                                     <constraint firstItem="aE9-kt-UB4" firstAttribute="top" secondItem="vzF-ti-j2n" secondAttribute="top" constant="25" id="hIc-ri-ou0"/>
-                                    <constraint firstAttribute="bottom" secondItem="W6T-mB-6Px" secondAttribute="bottom" id="iTW-SH-5bO"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -166,7 +157,6 @@
     </scenes>
     <resources>
         <image name="bg" width="147" height="270.33334350585938"/>
-        <image name="gd" width="35" height="26"/>
         <image name="nightrain" width="117" height="82.666664123535156"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
