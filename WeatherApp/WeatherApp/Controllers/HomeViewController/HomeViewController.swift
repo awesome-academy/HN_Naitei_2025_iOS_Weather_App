@@ -1,5 +1,5 @@
 //
-//  HomeViewController.swift
+//  WeatherDisplayModels.swift
 //  WeatherApp
 //
 //  Created by Phan Quyen on 06/08/2025.
@@ -15,7 +15,7 @@ class HomeViewController: BaseViewController {
     @IBOutlet weak var highLowTemperatureLabel: UILabel!
     @IBOutlet weak var weatherIconImageView: UIImageView!
     
-    @IBOutlet weak var hourlyWeeklySegmentedControl: UISegmentedControl!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var collectionView: UICollectionView!
     
     private var currentWeatherData: WeatherDisplayData?
@@ -72,8 +72,7 @@ class HomeViewController: BaseViewController {
     }
     
     private func setupSegmentedControl() {
-        hourlyWeeklySegmentedControl.selectedSegmentIndex = 0
-        hourlyWeeklySegmentedControl.addTarget(self, action: #selector(segmentValueChanged), for: .valueChanged)
+        segmentedControl.selectedSegmentIndex = 0
     }
     
     private func setupLabels() {
@@ -165,14 +164,12 @@ class HomeViewController: BaseViewController {
         }
     }
     
-    private func reloadCollectionViewData() {
-        UIView.transition(with: collectionView, duration: 0.3, options: .transitionCrossDissolve) {
-            self.collectionView.reloadData()
+    @IBAction func segmentChanged(_ sender: Any) {
+        print("Segment changed!")
+        if let segment = sender as? UISegmentedControl {
+            print("New index: \(segment.selectedSegmentIndex)")
         }
-    }
-    
-    @objc private func segmentValueChanged(_ sender: UISegmentedControl) {
-        reloadCollectionViewData()
+        collectionView.reloadData()
     }
     
     @objc private func handlePullToRefresh() {

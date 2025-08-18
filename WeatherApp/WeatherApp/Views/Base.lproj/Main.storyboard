@@ -89,6 +89,9 @@
                                         </segments>
                                         <color key="tintColor" systemColor="systemGroupedBackgroundColor"/>
                                         <color key="selectedSegmentTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="segmentChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="lfI-Lw-3fN"/>
+                                        </connections>
                                     </segmentedControl>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6Cg-YQ-HhJ">
                                         <rect key="frame" x="0.0" y="22" width="393" height="236"/>
@@ -177,10 +180,10 @@
                     </view>
                     <connections>
                         <outlet property="cityNameLabel" destination="Yjb-0k-R0B" id="Qln-aJ-Khf"/>
-                        <outlet property="collectionView" destination="6Cg-YQ-HhJ" id="mHE-wq-ebf"/>
+                        <outlet property="collectionView" destination="6Cg-YQ-HhJ" id="94m-E6-grX"/>
                         <outlet property="highLowTemperatureLabel" destination="LfM-VP-nyq" id="iYi-fZ-r1U"/>
-                        <outlet property="hourlyWeeklySegmentedControl" destination="aE9-kt-UB4" id="ii4-jx-xaH"/>
                         <outlet property="mainTemperatureLabel" destination="Tqg-Mi-K1l" id="6Iw-zB-AvP"/>
+                        <outlet property="segmentedControl" destination="aE9-kt-UB4" id="rTj-jE-VmW"/>
                         <outlet property="weatherDescriptionLabel" destination="YdM-A0-KzW" id="JiF-jH-SSG"/>
                         <outlet property="weatherIconImageView" destination="Ynn-K2-SKS" id="OgH-E3-hpd"/>
                     </connections>
@@ -188,6 +191,84 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="130.53435114503816" y="-34.507042253521128"/>
+        </scene>
+        <!--Weather-->
+        <scene sceneID="0w3-ic-yfg">
+            <objects>
+                <viewController storyboardIdentifier="WeatherViewController" title="Weather" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zBz-Au-D5o" customClass="WeatherViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="JKT-SH-kix">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="QKH-im-Cdi">
+                                <rect key="frame" x="18" y="102" width="350" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="350" id="KKg-c6-hxp"/>
+                                    <constraint firstAttribute="height" constant="44" id="tfe-Ha-tte"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="zBz-Au-D5o" id="Ogg-5K-fhW"/>
+                                </connections>
+                            </searchBar>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3D8-cP-Zto">
+                                <rect key="frame" x="76" y="208" width="240" height="128"/>
+                                <subviews>
+                                    <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WkJ-Md-yGL">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                        <connections>
+                                            <segue destination="asm-FR-9bb" kind="embed" id="IZf-gu-2KF"/>
+                                        </connections>
+                                    </containerView>
+                                </subviews>
+                                <viewLayoutGuide key="contentLayoutGuide" id="qIO-L5-wvB"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Sx8-My-tZC"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="wj2-Jl-h2T"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="3D8-cP-Zto" firstAttribute="leading" secondItem="wj2-Jl-h2T" secondAttribute="leading" id="4Pi-rj-dYo"/>
+                            <constraint firstItem="wj2-Jl-h2T" firstAttribute="trailing" secondItem="3D8-cP-Zto" secondAttribute="trailing" id="aXn-Sg-XYm"/>
+                            <constraint firstItem="QKH-im-Cdi" firstAttribute="centerX" secondItem="wj2-Jl-h2T" secondAttribute="centerX" constant="-3.5" id="e4R-Eh-SV8"/>
+                            <constraint firstItem="3D8-cP-Zto" firstAttribute="top" secondItem="QKH-im-Cdi" secondAttribute="bottom" constant="16" id="mCx-Tw-hI2"/>
+                            <constraint firstItem="wj2-Jl-h2T" firstAttribute="bottom" secondItem="3D8-cP-Zto" secondAttribute="bottom" id="uVL-DF-Qdb"/>
+                            <constraint firstItem="QKH-im-Cdi" firstAttribute="top" secondItem="wj2-Jl-h2T" secondAttribute="top" constant="43" id="w6X-OM-D6A"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qdm-pV-QwU" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1107.6335877862596" y="-35.211267605633807"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="kx8-cN-ioP">
+            <objects>
+                <viewController id="W0I-W3-t9t" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5YD-bX-C84">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PRs-tq-d3P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-321" y="-456"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="9iF-KV-lWL">
+            <objects>
+                <viewController id="asm-FR-9bb" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Brd-WG-Go5">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RlY-0s-bWD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-875" y="-115"/>
         </scene>
     </scenes>
     <resources>

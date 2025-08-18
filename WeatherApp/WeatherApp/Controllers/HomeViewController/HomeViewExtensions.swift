@@ -9,13 +9,14 @@ import UIKit
 
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return hourlyWeeklySegmentedControl.selectedSegmentIndex == 0 ? hourlyData.count : weeklyData.count
+        let isHourly = segmentedControl.selectedSegmentIndex == 0
+        return isHourly ? hourlyData.count : weeklyData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastCell", for: indexPath) as! ForecastCell
         
-        if hourlyWeeklySegmentedControl.selectedSegmentIndex == 0 {
+        if segmentedControl.selectedSegmentIndex == 0 {
             cell.configureHourly(with: hourlyData[indexPath.item])
         } else {
             cell.configureWeekly(with: weeklyData[indexPath.item])
@@ -29,7 +30,7 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        if hourlyWeeklySegmentedControl.selectedSegmentIndex == 0 {
+        if segmentedControl.selectedSegmentIndex == 0 {
             let hourlyItem = hourlyData[indexPath.item]
             showDetailAlert(title: "Hourly Forecast", message: "\(hourlyItem.time): \(hourlyItem.temperature)")
         } else {
