@@ -38,34 +38,3 @@ class ForecastGradientView: UIView {
         layer.cornerRadius = 16
     }
 }
-
-extension HomeViewController {
-    
-    func setupForecastBackground() {
-        let forecastBg = ForecastGradientView()
-        
-        view.insertSubview(forecastBg, at: 0)
-
-        forecastBg.frame = CGRect(
-            x: 0,
-            y: view.frame.height * 0.65,
-            width: view.frame.width,
-            height: view.frame.height * 0.35
-        )
-        
-        DispatchQueue.main.async {
-            self.view.subviews.forEach { subview in
-                if subview.frame.minY > 500 {
-                    subview.backgroundColor = .clear
-                    subview.subviews.forEach { innerView in
-                        if innerView is UISegmentedControl {
-                            return
-                        } else {
-                            innerView.backgroundColor = .clear
-                        }
-                    }
-                }
-            }
-        }
-    }
-}

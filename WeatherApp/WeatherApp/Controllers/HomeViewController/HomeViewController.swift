@@ -15,7 +15,7 @@ class HomeViewController: BaseViewController {
     @IBOutlet weak var highLowTemperatureLabel: UILabel!
     @IBOutlet weak var weatherIconImageView: UIImageView!
     
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var hourlyWeeklySegmentedControl: UISegmentedControl!
     @IBOutlet weak var collectionView: UICollectionView!
     
     private var currentWeatherData: WeatherDisplayData?
@@ -72,7 +72,7 @@ class HomeViewController: BaseViewController {
     }
     
     private func setupSegmentedControl() {
-        segmentedControl.selectedSegmentIndex = 0
+        hourlyWeeklySegmentedControl.selectedSegmentIndex = 0
     }
     
     private func setupLabels() {

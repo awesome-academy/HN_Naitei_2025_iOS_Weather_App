@@ -1,5 +1,5 @@
 //
-//  UIExtensions.swift
+//  UIViewController+Extension.swift
 //  WeatherApp
 //
 //  Created by Phan Quyen on 18/08/2025.
@@ -8,6 +8,28 @@
 import UIKit
 
 extension UIViewController {
+    
+    func setupForecastBackground() {
+        let forecastBg = ForecastGradientView()
+        
+        view.insertSubview(forecastBg, at: 0)
+        
+        forecastBg.frame = CGRect(
+            x: 0,
+            y: view.frame.height * 0.65,
+            width: view.frame.width,
+            height: view.frame.height * 0.35
+        )
+
+        view.subviews.forEach { subview in
+            if subview.frame.minY > 500 {
+                subview.backgroundColor = .clear
+                subview.subviews.forEach { innerView in
+                    innerView.backgroundColor = .clear
+                }
+            }
+        }
+    }
     
     func showSuccessMessage(_ message: String) {
         let alert = UIAlertController(
