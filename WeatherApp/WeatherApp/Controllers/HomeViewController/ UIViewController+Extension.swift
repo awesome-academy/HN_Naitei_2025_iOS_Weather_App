@@ -33,11 +33,11 @@ extension UIViewController {
     
     func showSuccessMessage(_ message: String) {
         let alert = UIAlertController(
-            title: "OK1",
+            title: "OK",
             message: message,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK1", style: .default))
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
         
         present(alert, animated: true)
         
@@ -48,7 +48,7 @@ extension UIViewController {
     
     func showDetailAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK1", style: .default))
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
 }
