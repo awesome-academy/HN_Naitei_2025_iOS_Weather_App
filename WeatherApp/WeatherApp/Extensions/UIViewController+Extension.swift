@@ -20,7 +20,6 @@ extension UIViewController {
             width: view.frame.width,
             height: view.frame.height * 0.35
         )
-
         view.subviews.forEach { subview in
             if subview.frame.minY > 500 {
                 subview.backgroundColor = .clear
@@ -49,6 +48,14 @@ extension UIViewController {
     func showDetailAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
+    func showErrorAlert(message: String, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            completion?()
+        })
         present(alert, animated: true)
     }
 }
