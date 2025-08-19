@@ -1,5 +1,5 @@
 //
-//  WeatherDisplayModels.swift
+//  HomeViewController.swift
 //  WeatherApp
 //
 //  Created by Phan Quyen on 06/08/2025.
@@ -43,10 +43,11 @@ class HomeViewController: BaseViewController {
         setupForecastBackground()
         loadInitialData()
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refreshWeatherDataIfNeeded()
+        print("Home appeared") // giữ lại log từ develop
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -165,9 +166,8 @@ class HomeViewController: BaseViewController {
     }
     
     @IBAction func segmentChanged(_ sender: Any) {
-        print("Segment changed!")
         if let segment = sender as? UISegmentedControl {
-            print("New index: \(segment.selectedSegmentIndex)")
+            print("Segment changed! New index: \(segment.selectedSegmentIndex)")
         }
         collectionView.reloadData()
     }
