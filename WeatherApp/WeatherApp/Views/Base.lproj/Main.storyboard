@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ML7-Me-xkf">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
@@ -189,6 +189,47 @@
             </objects>
             <point key="canvasLocation" x="130.53435114503816" y="-34.507042253521128"/>
         </scene>
+        <!--Weather-->
+        <scene sceneID="kQs-lu-ZBC">
+            <objects>
+                <viewController storyboardIdentifier="WeatherViewController" title="Weather" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ML7-Me-xkf" customClass="WeatherViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2Iq-bb-hJR">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" placeholder="Search for a city..." translatesAutoresizingMaskIntoConstraints="NO" id="MlQ-Ll-jYS">
+                                <rect key="frame" x="20" y="79" width="353" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="wBR-sv-BLE"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ML7-Me-xkf" id="nQO-F4-8dj"/>
+                                </connections>
+                            </searchBar>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6mx-Mj-ggJ">
+                                <rect key="frame" x="0.0" y="139" width="393" height="713"/>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Sh5-4h-09b"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="hPP-uL-Mpa"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="wOP-Ip-nFl"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6mx-Mj-ggJ" firstAttribute="leading" secondItem="wOP-Ip-nFl" secondAttribute="leading" id="1oN-Qk-IAI"/>
+                            <constraint firstItem="6mx-Mj-ggJ" firstAttribute="top" secondItem="MlQ-Ll-jYS" secondAttribute="bottom" constant="16" id="Kqc-c2-SSf"/>
+                            <constraint firstItem="MlQ-Ll-jYS" firstAttribute="centerX" secondItem="2Iq-bb-hJR" secondAttribute="centerX" id="OY9-N2-f18"/>
+                            <constraint firstItem="MlQ-Ll-jYS" firstAttribute="centerX" secondItem="6mx-Mj-ggJ" secondAttribute="centerX" id="Zvd-Hl-jhH"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="6mx-Mj-ggJ" secondAttribute="bottom" constant="-34" id="cE7-uc-7wo"/>
+                            <constraint firstItem="MlQ-Ll-jYS" firstAttribute="top" secondItem="wOP-Ip-nFl" secondAttribute="top" constant="20" id="fj8-dH-9fu"/>
+                            <constraint firstItem="MlQ-Ll-jYS" firstAttribute="leading" secondItem="wOP-Ip-nFl" secondAttribute="leading" constant="20" id="lik-Cc-lFs"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OhV-bv-wpq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1113.7404580152672" y="-22.535211267605636"/>
+        </scene>
     </scenes>
     <resources>
         <image name="bg" width="147" height="270.33334350585938"/>
@@ -197,10 +238,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGroupedBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

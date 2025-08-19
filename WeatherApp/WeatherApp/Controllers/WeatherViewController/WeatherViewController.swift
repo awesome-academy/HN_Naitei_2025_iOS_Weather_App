@@ -12,15 +12,19 @@ class WeatherViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("Weather appeared")
     }
     
     private func setupNavigationBar() {
-        title = "Weather"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        title = ""
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = UIColor.systemPurple
     }
 }
