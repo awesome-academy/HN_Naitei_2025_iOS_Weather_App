@@ -47,7 +47,7 @@ class HomeViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refreshWeatherDataIfNeeded()
-        print("Home appeared") // giữ lại log từ develop
+        debugPrint("Home appeared")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -167,7 +167,7 @@ class HomeViewController: BaseViewController {
     
     @IBAction func segmentChanged(_ sender: Any) {
         if let segment = sender as? UISegmentedControl {
-            print("Segment changed! New index: \(segment.selectedSegmentIndex)")
+            debugPrint("Segment changed! New index: \(segment.selectedSegmentIndex)")
         }
         collectionView.reloadData()
     }
