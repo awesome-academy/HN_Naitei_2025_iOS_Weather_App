@@ -33,7 +33,7 @@ extension UIViewController {
     
     func showSuccessMessage(_ message: String) {
         let alert = UIAlertController(
-            title: "Success",
+            title: "OK",
             message: message,
             preferredStyle: .alert
         )
