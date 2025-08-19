@@ -58,7 +58,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         switch tabType {
         case .home:
-            viewController = HomeViewController()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            viewController = storyboard.instantiateViewController(withIdentifier: "HomeViewController")
         case .weather:
             viewController = WeatherViewController()
         case .favorites:
@@ -79,8 +80,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func setupTabBarAppearance(_ tabBarController: UITabBarController) {
         let tabBar = tabBarController.tabBar
-        tabBar.tintColor = .systemBlue
-        tabBar.unselectedItemTintColor = .systemGray
-        tabBar.backgroundColor = .systemBackground
+        
+        tabBar.backgroundImage = UIImage()
+        tabBar.shadowImage = UIImage()
+        tabBar.backgroundColor = UIColor.clear
+        tabBar.isTranslucent = true
+
+        tabBar.tintColor = .white
+        tabBar.unselectedItemTintColor = .lightGray
     }
 }
