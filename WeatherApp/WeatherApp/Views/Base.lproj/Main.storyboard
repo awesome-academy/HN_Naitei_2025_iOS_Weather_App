@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
@@ -77,6 +76,7 @@
                                     <constraint firstItem="LfM-VP-nyq" firstAttribute="top" secondItem="YdM-A0-KzW" secondAttribute="bottom" constant="6" id="xWS-FX-AFh"/>
                                 </constraints>
                             </view>
+
                                 <rect key="frame" x="0.0" y="552" width="393" height="300"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aE9-kt-UB4">
@@ -147,15 +147,6 @@
                                     </collectionView>
                                 </subviews>
 
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="aE9-kt-UB4" firstAttribute="leading" secondItem="vzF-ti-j2n" secondAttribute="leading" constant="20" id="68E-Uy-Jsz"/>
-                                    <constraint firstAttribute="trailing" secondItem="6Cg-YQ-HhJ" secondAttribute="trailing" id="BFO-JB-thL"/>
-                                    <constraint firstAttribute="bottom" secondItem="6Cg-YQ-HhJ" secondAttribute="bottom" id="O6Y-ia-tIp"/>
-                                    <constraint firstItem="6Cg-YQ-HhJ" firstAttribute="top" secondItem="aE9-kt-UB4" secondAttribute="bottom" constant="8" id="Qb4-di-72o"/>
-                                    <constraint firstItem="6Cg-YQ-HhJ" firstAttribute="leading" secondItem="vzF-ti-j2n" secondAttribute="leading" id="Rg8-ve-hIj"/>
-                                    <constraint firstAttribute="trailing" secondItem="aE9-kt-UB4" secondAttribute="trailing" constant="20" id="Ypk-6G-PJe"/>
-
                                     <constraint firstItem="aE9-kt-UB4" firstAttribute="top" secondItem="vzF-ti-j2n" secondAttribute="top" constant="25" id="hIc-ri-ou0"/>
                                 </constraints>
                             </view>
@@ -185,6 +176,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="130.53435114503816" y="-34.507042253521128"/>
+
         </scene>
     </scenes>
     <resources>

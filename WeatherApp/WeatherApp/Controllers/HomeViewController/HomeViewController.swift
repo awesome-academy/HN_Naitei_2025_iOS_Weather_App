@@ -1,5 +1,4 @@
-//
-//  HomeViewController.swift
+
 //  WeatherApp
 //
 //  Created by Phan Quyen on 06/08/2025.
@@ -43,11 +42,6 @@ class HomeViewController: BaseViewController {
         setupForecastBackground()
         loadInitialData()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        refreshWeatherDataIfNeeded()
-        debugPrint("Home appeared")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -85,8 +79,6 @@ class HomeViewController: BaseViewController {
     
     private func setupImageViews() {
         weatherIconImageView.contentMode = .scaleAspectFit
-        weatherIconImageView.image = UIImage(systemName: "cloud")
-        weatherIconImageView.tintColor = .white
     }
     
     private func setupCollectionView() {
@@ -100,8 +92,6 @@ class HomeViewController: BaseViewController {
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
-            flowLayout.minimumInteritemSpacing = 8
-            flowLayout.minimumLineSpacing = 20
             flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
         }
     }
@@ -129,7 +119,6 @@ class HomeViewController: BaseViewController {
             description: "Mostly clear",
             high: "40°",
             low: "36°",
-            icon: "nightrain"
         )
         
         updateUI(with: mockWeatherData)
@@ -153,7 +142,6 @@ class HomeViewController: BaseViewController {
         if let iconImage = UIImage(named: data.icon) {
             weatherIconImageView.image = iconImage
         } else {
-            weatherIconImageView.image = UIImage(systemName: "cloud")
         }
         
         collectionView.reloadData()
@@ -166,8 +154,6 @@ class HomeViewController: BaseViewController {
     }
     
     @IBAction func segmentChanged(_ sender: Any) {
-        if let segment = sender as? UISegmentedControl {
-            debugPrint("Segment changed! New index: \(segment.selectedSegmentIndex)")
         }
         collectionView.reloadData()
     }
