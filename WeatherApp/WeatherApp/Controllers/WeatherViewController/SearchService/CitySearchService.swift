@@ -11,8 +11,11 @@ class CitySearchService {
     static let shared = CitySearchService()
     
     private let baseURL = "https://api.openweathermap.org/geo/1.0/direct"
-    private let apiKey = "cdf3aca7aeb52390af4bc0db457f5f60"
     private let networkManager = NetworkManager.shared
+    
+    private var apiKey: String? {
+        return Bundle.main.infoDictionary?["OpenWeatherMapAPIKey"] as? String
+    }
     
     private init() {}
     
@@ -22,7 +25,12 @@ class CitySearchService {
             return
         }
         
-        guard let url = buildSearchURL(query: query) else {
+        guard let apiKey = apiKey, !apiKey.isEmpty else {
+            completion(.failure(.invalidAPIKey))
+            return
+        }
+        
+        guard let url = buildSearchURL(query: query, apiKey: apiKey) else {
             completion(.failure(.invalidURL))
             return
         }
@@ -43,7 +51,7 @@ class CitySearchService {
         }
     }
     
-    private func buildSearchURL(query: String) -> URL? {
+    private func buildSearchURL(query: String, apiKey: String) -> URL? {
         var components = URLComponents(string: baseURL)
         components?.queryItems = [
             URLQueryItem(name: "q", value: query),
