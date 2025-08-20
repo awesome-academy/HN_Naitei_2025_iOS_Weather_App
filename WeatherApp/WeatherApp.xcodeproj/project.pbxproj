@@ -148,6 +148,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		201705352E5318C400DDBE9A /* HomeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				20BEC1072E52CA4B003CD126 /* ForecastGradientView.swift */,
+				206D0B392E432F8300827E46 /* HomeViewController.swift */,
+				201705362E5318DE00DDBE9A /*  UIViewController+Extension.swift */,
+			);
+			path = HomeViewController;
+			sourceTree = "<group>";
+		};
 		206D0B312E432AEA00827E46 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +189,7 @@
 				206D0B372E432F7500827E46 /* BaseViewController.swift */,
 				206D0B3D2E432F9C00827E46 /* FavoritesViewController.swift */,
 				206D0B3F2E432FA900827E46 /* SettingsViewController.swift */,
+				201705382E53199300DDBE9A /* UIViewController+Extension.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -275,30 +286,7 @@
 			path = HomeViewController;
 			sourceTree = "<group>";
 		};
-		20D51A642E54160F004F1BB3 /* WeatherViewController */ = {
-			isa = PBXGroup;
-			children = (
-				20BC287E2E556C670086126D /* SearchService */,
-				206D0B3B2E432F8F00827E46 /* WeatherViewController.swift */,
-				20AE281B2E545C37002C1EFD /* GradientBackgroundView.swift */,
-				20AE281F2E5475B3002C1EFD /* WeatherTableViewCell.swift */,
-				20AE28212E547A46002C1EFD /*  WeatherDataLoading.swift */,
-				20AE28252E548209002C1EFD /* WeatherImages.swift */,
-			);
-			path = WeatherViewController;
-			sourceTree = "<group>";
-		};
-		20D51A652E541687004F1BB3 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				20A1FF722E4C744F0080A6D6 /* FavoriteCity+Extensions.swift */,
-				201705382E53199300DDBE9A /* UIViewController+Extension.swift */,
-				20A1FF692E4C73F50080A6D6 /* String+Extensions.swift */,
-				20AE281D2E545EA7002C1EFD /* UIViewController+GradientBackground.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
+
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -460,7 +448,7 @@
 				20A1FF772E4C74500080A6D6 /* ForecastModels.swift in Sources */,
 				20A1FF6C2E4C73F50080A6D6 /* CityLocation.swift in Sources */,
 				20BEC10F2E52D4C2003CD126 /* HomeViewExtensions.swift in Sources */,
-				20AE28242E547A5A002C1EFD /* WeatherSearchBar.swift in Sources */,
+
 				206D0B3C2E432F8F00827E46 /* WeatherViewController.swift in Sources */,
 				206D0B3E2E432F9C00827E46 /* FavoritesViewController.swift in Sources */,
 				2017053B2E531AAE00DDBE9A /* HourlyDisplayData.swift in Sources */,
@@ -474,6 +462,7 @@
 				20A1FF842E4C92CD0080A6D6 /* DataManager.swift in Sources */,
 				206D0B382E432F7500827E46 /* BaseViewController.swift in Sources */,
 				20A1FF882E4C930B0080A6D6 /* BackgroundTaskManager.swift in Sources */,
+				20BEC1082E52CA4B003CD126 /* ForecastGradientView.swift in Sources */,
 				20A1FF822E4C83B00080A6D6 /* NetworkManager.swift in Sources */,
 				20BCB0D02E43039E000D43DC /* WeatherApp.xcdatamodeld in Sources */,
 				20AE281E2E545EA7002C1EFD /* UIViewController+GradientBackground.swift in Sources */,
@@ -483,13 +472,7 @@
 				20C877822E4D7E9A0015AA93 /* WeatherRepository.swift in Sources */,
 				20A1FF712E4C73F50080A6D6 /* LocationValidator.swift in Sources */,
 				20BEC1172E52DC81003CD126 /* ForecastCollectionCell.swift in Sources */,
-				20AE28222E547A46002C1EFD /*  WeatherDataLoading.swift in Sources */,
-				20A1FF752E4C74500080A6D6 /* FavoriteCity+Extensions.swift in Sources */,
-				20A1FF6D2E4C73F50080A6D6 /* CitySearchResult.swift in Sources */,
-				20AE28262E548209002C1EFD /* WeatherImages.swift in Sources */,
-				20BEC10D2E52D496003CD126 /* WeatherDisplayData.swift in Sources */,
-				20BEC10A2E52D2EB003CD126 /* ForecastGradientView.swift in Sources */,
-				20BC28842E556CCE0086126D /* CitySearchResult+Extensions.swift in Sources */,
+
 				20BCB0C82E43039E000D43DC /* SceneDelegate.swift in Sources */,
 				20DA0E2A2E4D817E00353E98 /* DataError.swift in Sources */,
 				20AE281C2E545C37002C1EFD /* GradientBackgroundView.swift in Sources */,
