@@ -43,14 +43,14 @@ class WeatherViewController: BaseViewController {
     
     private func setupSearchBar() {
         citySearchBar.placeholder = "Search for a city..."
-        citySearchBar.delegate = self
+
         citySearchBar.backgroundImage = UIImage()
         citySearchBar.backgroundColor = .clear
         citySearchBar.searchTextField.backgroundColor = UIColor.white.withAlphaComponent(0.95)
         citySearchBar.searchTextField.layer.cornerRadius = 12
         citySearchBar.searchTextField.textColor = .darkGray
         citySearchBar.searchTextField.font = UIFont.systemFont(ofSize: 16)
-        citySearchBar.showsCancelButton = true
+
     }
     
     private func setupTableView() {
@@ -89,9 +89,5 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCity = weatherDataList[indexPath.row]
 
-        showDetailAlert(
-            title: selectedCity.cityName,
-            message: "Temperature: \(selectedCity.temperature)\nCondition: \(selectedCity.description)"
-        )
     }
 }
