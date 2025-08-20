@@ -64,7 +64,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 viewController = storyboard.instantiateViewController(withIdentifier: "WeatherViewController")
         case .favorites:
-            viewController = FavoritesViewController()
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                viewController = storyboard.instantiateViewController(withIdentifier: "FavoritesViewController")
         case .settings:
             viewController = SettingsViewController()
         }

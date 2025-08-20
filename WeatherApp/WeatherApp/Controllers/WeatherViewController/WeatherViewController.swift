@@ -71,6 +71,8 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherCell", for: indexPath) as! WeatherTableViewCell
+        
+        cell.delegate = self  // Set delegate
         cell.configure(with: weatherDataList[indexPath.row])
         
         if indexPath.row == weatherDataList.count - 1 {
@@ -88,10 +90,6 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCity = weatherDataList[indexPath.row]
-
-        showDetailAlert(
-            title: selectedCity.cityName,
-            message: "Temperature: \(selectedCity.temperature)\nCondition: \(selectedCity.description)"
-        )
+        showDetailAlert(title: "Weather Info", message: "\(selectedCity.cityName): \(selectedCity.temperature)")
     }
 }
