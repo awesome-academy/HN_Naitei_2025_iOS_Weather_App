@@ -13,6 +13,10 @@ class WeatherTableViewCell: UITableViewCell {
     @IBOutlet weak var weatherIconImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var favoriteButton: UIButton!
+    
+    weak var delegate: WeatherTableViewCellDelegate?
+    private var currentWeatherData: WeatherDisplayData?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,17 +38,62 @@ class WeatherTableViewCell: UITableViewCell {
         weatherIconImageView.backgroundColor = .clear
         
         temperatureLabel.textColor = .white
-        temperatureLabel.font = UIFont.systemFont(ofSize: 35, weight: .light)
+        temperatureLabel.font = UIFont.systemFont(ofSize: 20, weight: .light)
         
         cityLabel.textColor = UIColor.white.withAlphaComponent(0.9)
         cityLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        
+        setupFavoriteButton()
+    }
+    
+    private func setupFavoriteButton() {
+        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        favoriteButton.tintColor = .white
+        favoriteButton.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        favoriteButton.layer.cornerRadius = 15
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
     }
     
     func configure(with data: WeatherDisplayData) {
+        currentWeatherData = data
         temperatureLabel.text = data.temperature
         cityLabel.text = data.cityName
         
         let imageName = WeatherImages.randomImage()
         weatherIconImageView.image = UIImage(named: imageName)
+        
+        checkFavoriteStatus(for: data.cityName)
     }
+    
+    private func checkFavoriteStatus(for cityName: String) {
+        DataManager.shared.getAllFavorites { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let favorites):
+                    let isFavorite = favorites.contains { favorite in
+                        favorite.displayName.lowercased().contains(cityName.lowercased().components(separatedBy: ",").first ?? "")
+                    }
+                    self?.favoriteButton.isSelected = isFavorite
+                case .failure:
+                    self?.favoriteButton.isSelected = false
+                }
+            }
+        }
+    }
+    
+    @objc private func favoriteButtonTapped() {
+        guard let weatherData = currentWeatherData else { return }
+        
+        if favoriteButton.isSelected {
+            delegate?.didTapRemoveFavorite(weatherData)
+        } else {
+            delegate?.didTapAddFavorite(weatherData)
+        }
+    }
+}
+
+protocol WeatherTableViewCellDelegate: AnyObject {
+    func didTapAddFavorite(_ weatherData: WeatherDisplayData)
+    func didTapRemoveFavorite(_ weatherData: WeatherDisplayData)
 }

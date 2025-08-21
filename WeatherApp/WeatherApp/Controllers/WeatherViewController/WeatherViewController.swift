@@ -43,14 +43,14 @@ class WeatherViewController: BaseViewController {
     
     private func setupSearchBar() {
         citySearchBar.placeholder = "Search for a city..."
-
+        citySearchBar.delegate = self
         citySearchBar.backgroundImage = UIImage()
         citySearchBar.backgroundColor = .clear
         citySearchBar.searchTextField.backgroundColor = UIColor.white.withAlphaComponent(0.95)
         citySearchBar.searchTextField.layer.cornerRadius = 12
         citySearchBar.searchTextField.textColor = .darkGray
         citySearchBar.searchTextField.font = UIFont.systemFont(ofSize: 16)
-
+        citySearchBar.showsCancelButton = true
     }
     
     private func setupTableView() {
@@ -63,6 +63,7 @@ class WeatherViewController: BaseViewController {
     }
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,6 +72,8 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherCell", for: indexPath) as! WeatherTableViewCell
+        
+        cell.delegate = self  // Set delegate
         cell.configure(with: weatherDataList[indexPath.row])
         
         if indexPath.row == weatherDataList.count - 1 {
@@ -88,6 +91,41 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCity = weatherDataList[indexPath.row]
+        showDetailAlert(title: "Weather Info", message: "\(selectedCity.cityName): \(selectedCity.temperature)")
+    }
+}
 
+// MARK: - WeatherTableViewCellDelegate
+extension WeatherViewController: WeatherTableViewCellDelegate {
+    func didTapAddFavorite(_ weatherData: WeatherDisplayData) {
+        DataManager.shared.addFavorite(weatherData) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.showSuccessAlert(message: "Added to favorites!")
+                case .failure(let error):
+                    self?.showErrorAlert(message: "Failed to add favorite: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    func didTapRemoveFavorite(_ weatherData: WeatherDisplayData) {
+        showConfirmationAlert(
+            title: "Remove Favorite",
+            message: "Remove \(weatherData.cityName) from favorites?",
+            confirmTitle: "Remove"
+        ) { [weak self] in
+            DataManager.shared.removeFavorite(weatherData) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self?.showSuccessAlert(message: "Removed from favorites!")
+                    case .failure(let error):
+                        self?.showErrorAlert(message: "Failed to remove favorite: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
     }
 }

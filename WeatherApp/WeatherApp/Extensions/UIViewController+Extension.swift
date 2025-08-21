@@ -58,4 +58,21 @@ extension UIViewController {
         })
         present(alert, animated: true)
     }
+    
+    func showSuccessAlert(message: String, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: "Success", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            completion?()
+        })
+        present(alert, animated: true)
+    }
+    
+    func showConfirmationAlert(title: String, message: String, confirmTitle: String = "Confirm", confirmAction: @escaping () -> Void) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: confirmTitle, style: .destructive) { _ in
+            confirmAction()
+        })
+        present(alert, animated: true)
+    }
 }
