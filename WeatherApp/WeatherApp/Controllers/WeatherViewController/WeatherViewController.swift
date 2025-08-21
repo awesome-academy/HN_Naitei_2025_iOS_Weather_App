@@ -28,7 +28,6 @@ class WeatherViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("Weather view appeared")
     }
     
     private func setupNavigationBar() {
@@ -36,7 +35,7 @@ class WeatherViewController: BaseViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     
-    private func setupUI() {
+    private func setupUI() {	
         addGradientBackground()
         setupSearchBar()
     }
