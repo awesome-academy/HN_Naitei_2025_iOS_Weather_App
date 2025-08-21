@@ -1,5 +1,4 @@
-//
-//  WeatherDisplayModels.swift
+
 //  WeatherApp
 //
 //  Created by Phan Quyen on 06/08/2025.
@@ -44,9 +43,6 @@ class HomeViewController: BaseViewController {
         loadInitialData()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        refreshWeatherDataIfNeeded()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,7 +80,7 @@ class HomeViewController: BaseViewController {
     
     private func setupImageViews() {
         weatherIconImageView.contentMode = .scaleAspectFit
-        weatherIconImageView.image = UIImage(named: WeatherImages.morningSunny)
+
     }
     
     private func setupCollectionView() {
@@ -98,8 +94,7 @@ class HomeViewController: BaseViewController {
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
-            flowLayout.minimumInteritemSpacing = 35
-            flowLayout.minimumLineSpacing = 35
+
             flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
         }
     }
@@ -127,7 +122,7 @@ class HomeViewController: BaseViewController {
             description: "Mostly clear",
             high: "40°",
             low: "36°",
-            icon: WeatherImages.morningSunny
+
         )
         
         updateUI(with: mockWeatherData)
@@ -151,7 +146,7 @@ class HomeViewController: BaseViewController {
         if let iconImage = UIImage(named: data.icon) {
             weatherIconImageView.image = iconImage
         } else {
-            weatherIconImageView.image = UIImage(named: WeatherImages.morningSunny)
+
         }
         
         collectionView.reloadData()
@@ -164,9 +159,7 @@ class HomeViewController: BaseViewController {
     }
     
     @IBAction func segmentChanged(_ sender: Any) {
-        print("Segment changed!")
-        if let segment = sender as? UISegmentedControl {
-            debugPrint("New index: \(segment.selectedSegmentIndex)")
+
         }
         collectionView.reloadData()
     }
