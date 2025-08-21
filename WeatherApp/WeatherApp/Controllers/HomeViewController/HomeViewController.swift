@@ -42,6 +42,7 @@ class HomeViewController: BaseViewController {
         setupForecastBackground()
         loadInitialData()
     }
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -79,6 +80,7 @@ class HomeViewController: BaseViewController {
     
     private func setupImageViews() {
         weatherIconImageView.contentMode = .scaleAspectFit
+
     }
     
     private func setupCollectionView() {
@@ -92,6 +94,7 @@ class HomeViewController: BaseViewController {
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
+
             flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
         }
     }
@@ -119,6 +122,7 @@ class HomeViewController: BaseViewController {
             description: "Mostly clear",
             high: "40°",
             low: "36°",
+
         )
         
         updateUI(with: mockWeatherData)
@@ -142,6 +146,7 @@ class HomeViewController: BaseViewController {
         if let iconImage = UIImage(named: data.icon) {
             weatherIconImageView.image = iconImage
         } else {
+
         }
         
         collectionView.reloadData()
@@ -154,6 +159,7 @@ class HomeViewController: BaseViewController {
     }
     
     @IBAction func segmentChanged(_ sender: Any) {
+
         }
         collectionView.reloadData()
     }
