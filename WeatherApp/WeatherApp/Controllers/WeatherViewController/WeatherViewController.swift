@@ -28,6 +28,7 @@ class WeatherViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        print("Weather view appeared")
     }
     
     private func setupNavigationBar() {
@@ -35,7 +36,7 @@ class WeatherViewController: BaseViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     
-    private func setupUI() {	
+    private func setupUI() {
         addGradientBackground()
         setupSearchBar()
     }
@@ -62,6 +63,7 @@ class WeatherViewController: BaseViewController {
     }
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -90,5 +92,40 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCity = weatherDataList[indexPath.row]
         showDetailAlert(title: "Weather Info", message: "\(selectedCity.cityName): \(selectedCity.temperature)")
+    }
+}
+
+// MARK: - WeatherTableViewCellDelegate
+extension WeatherViewController: WeatherTableViewCellDelegate {
+    func didTapAddFavorite(_ weatherData: WeatherDisplayData) {
+        DataManager.shared.addFavorite(weatherData) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.showSuccessAlert(message: "Added to favorites!")
+                case .failure(let error):
+                    self?.showErrorAlert(message: "Failed to add favorite: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    func didTapRemoveFavorite(_ weatherData: WeatherDisplayData) {
+        showConfirmationAlert(
+            title: "Remove Favorite",
+            message: "Remove \(weatherData.cityName) from favorites?",
+            confirmTitle: "Remove"
+        ) { [weak self] in
+            DataManager.shared.removeFavorite(weatherData) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self?.showSuccessAlert(message: "Removed from favorites!")
+                    case .failure(let error):
+                        self?.showErrorAlert(message: "Failed to remove favorite: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
     }
 }

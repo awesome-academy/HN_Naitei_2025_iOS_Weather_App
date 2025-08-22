@@ -78,6 +78,8 @@ class HomeViewController: BaseViewController {
     
     deinit {
         locationManager.delegate = nil
+        collectionView?.delegate = nil
+        collectionView?.dataSource = nil
     }
     
     private func setupNavigationBar() {
@@ -299,6 +301,19 @@ class HomeViewController: BaseViewController {
         updateUI(with: fallbackData)
     }
     
+    private func loadMockWeatherData() {
+        let mockWeatherData = WeatherDisplayData(
+            cityName: "Hanoi",
+            temperature: "38°",
+            description: "Mostly clear",
+            high: "40°",
+            low: "36°",
+            icon: WeatherImages.morningSunny
+        )
+        
+        updateUI(with: mockWeatherData)
+    }
+    
     private func updateUI(with data: WeatherDisplayData) {
         guard Thread.isMainThread else {
             DispatchQueue.main.async {
@@ -334,6 +349,12 @@ class HomeViewController: BaseViewController {
         collectionView.reloadData()
     }
     
+    private func refreshWeatherDataIfNeeded() {
+        if currentWeatherData == nil {
+            loadInitialData()
+        }
+    }
+    
     @IBAction func segmentChanged(_ sender: Any) {
         updateCollectionViewDataSource()
     }
@@ -351,8 +372,25 @@ class HomeViewController: BaseViewController {
             self.collectionView.refreshControl?.endRefreshing()
         }
     }
+    
+    @objc private func refreshWeatherData() {
+        guard !isLoading else {
+            collectionView.refreshControl?.endRefreshing()
+            return
+        }
+        
+        isLoading = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.loadMockWeatherData()
+            self.isLoading = false
+            self.collectionView.refreshControl?.endRefreshing()
+            self.showSuccessMessage("Weather updated")
+        }
+    }
 }
 
+// MARK: - LocationManagerDelegate
 extension HomeViewController: LocationManagerDelegate {
     
     func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation) {
@@ -395,6 +433,7 @@ extension HomeViewController: LocationManagerDelegate {
     }
 }
 
+// MARK: - ForecastDataSourceDelegate
 extension HomeViewController: ForecastDataSourceDelegate {
     
     func didSelectHourlyForecast(_ forecast: HourlyDisplayData, at index: Int) {
