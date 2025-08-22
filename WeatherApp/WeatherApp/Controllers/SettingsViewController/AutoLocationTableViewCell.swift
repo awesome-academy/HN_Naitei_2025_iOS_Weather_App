@@ -32,14 +32,13 @@ class AutoLocationTableViewCell: UITableViewCell {
         titleLabel.textColor = .white
         
         locationSwitch.onTintColor = UIColor.systemBlue
-        locationSwitch.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
     }
     
     func configure(isEnabled: Bool) {
         locationSwitch.isOn = isEnabled
     }
     
-    @objc private func switchValueChanged() {
-        delegate?.didToggleAutomatedLocation(locationSwitch.isOn)
+    @IBAction func switchValueChanged(_ sender: UISwitch) {
+        delegate?.didToggleAutomatedLocation(sender.isOn)
     }
 }

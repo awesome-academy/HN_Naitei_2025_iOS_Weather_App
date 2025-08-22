@@ -32,14 +32,13 @@ class NotificationTableViewCell: UITableViewCell {
         titleLabel.textColor = .white
         
         notificationSwitch.onTintColor = UIColor.systemGreen
-        notificationSwitch.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
     }
     
     func configure(isEnabled: Bool) {
         notificationSwitch.isOn = isEnabled
     }
     
-    @objc private func switchValueChanged() {
-        delegate?.didToggleNotification(notificationSwitch.isOn)
+    @IBAction func switchValueChanged(_ sender: UISwitch) {
+        delegate?.didToggleNotification(sender.isOn)
     }
 }
