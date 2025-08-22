@@ -16,18 +16,13 @@ class HourlyForecastDataSource: NSObject {
     private var displayData: [HourlyDisplayData] {
         if !hourlyForecasts.isEmpty {
             return hourlyForecasts.prefix(8).map { forecast in
-                HourlyDisplayData(
-                    time: forecast.timeString,
-                    temperature: forecast.temperatureString,
-                    icon: WeatherImages.imageForWeather(condition: forecast.description, iconCode: forecast.icon)
-                )
+                HourlyDisplayData(from: forecast)
             }
         }
         return mockData
     }
 }
 
-// MARK: - UICollectionViewDataSource
 extension HourlyForecastDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return displayData.count
@@ -40,10 +35,27 @@ extension HourlyForecastDataSource: UICollectionViewDataSource {
     }
 }
 
-// MARK: - UICollectionViewDelegate
 extension HourlyForecastDataSource: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         delegate?.didSelectHourlyForecast(displayData[indexPath.item], at: indexPath.item)
+    }
+}
+
+extension HourlyForecastDataSource: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 80, height: 120)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
     }
 }

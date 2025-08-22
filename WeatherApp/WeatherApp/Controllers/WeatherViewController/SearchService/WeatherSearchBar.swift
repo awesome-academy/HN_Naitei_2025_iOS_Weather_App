@@ -57,7 +57,7 @@ extension WeatherViewController: UISearchBarDelegate {
                 description: "Loading...",
                 high: "",
                 low: "",
-                icon: ""
+                icon: WeatherImages.morningSunny // Use consistent default
             )
         }
         
@@ -80,13 +80,16 @@ extension WeatherViewController: UISearchBarDelegate {
                     switch result {
                     case .success(let weatherData):
                         if index < self?.weatherDataList.count ?? 0 {
+                            // Use consistent icon logic
+                            let weatherIcon = WeatherImages.imageForWeatherData(weatherData)
+                            
                             self?.weatherDataList[index] = WeatherDisplayData(
                                 cityName: city.displayName,
                                 temperature: weatherData.temperatureString,
                                 description: weatherData.description,
                                 high: "\(Int(weatherData.temperature + 5))°",
                                 low: "\(Int(weatherData.temperature - 5))°",
-                                icon: WeatherImages.randomImage()
+                                icon: weatherIcon
                             )
                             
                             let indexPath = IndexPath(row: index, section: 0)

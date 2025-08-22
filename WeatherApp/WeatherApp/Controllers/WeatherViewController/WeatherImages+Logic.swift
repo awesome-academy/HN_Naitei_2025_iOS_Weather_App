@@ -10,76 +10,60 @@ import Foundation
 extension WeatherImages {
     
     static func imageForWeather(condition: String, iconCode: String? = nil) -> String {
-        let condition = condition.lowercased()
-        let isDay = isCurrentlyDay()
-        
-        // Check if we have icon code from API (like "01d", "02n", etc.)
-        if let iconCode = iconCode {
+        if let iconCode = iconCode, !iconCode.isEmpty {
             return imageFromIconCode(iconCode)
         }
-        
-        // Fallback to condition-based logic
-        return imageFromCondition(condition, isDay: isDay)
+        return imageFromCondition(condition)
     }
     
     private static func imageFromIconCode(_ iconCode: String) -> String {
         let isDay = iconCode.hasSuffix("d")
-        let weatherCode = String(iconCode.dropLast()) // Remove 'd' or 'n'
+        let weatherCode = String(iconCode.dropLast())
         
         switch weatherCode {
-        case "01": // clear sky
+        case "01":
             return isDay ? morningSunny : nightWind
-        case "02", "03", "04": // clouds
+        case "02":
             return isDay ? morningSunny : nightWind
-        case "09": // shower rain
+        case "03", "04":
+            return isDay ? morningSunny : nightWind
+        case "09":
             return isDay ? morningLightRain : nightRain
-        case "10": // rain
+        case "10":
             return isDay ? morningLightRain : nightRain
-        case "11": // thunderstorm
+        case "11":
             return tornado
-        case "13": // snow
+        case "13":
             return isDay ? morningHeavyRain : nightRain
-        case "50": // mist/fog
+        case "50":
             return isDay ? morningSunny : nightWind
         default:
-            return isDay ? morningSunny : nightRain
+            return morningSunny
         }
     }
     
-    private static func imageFromCondition(_ condition: String, isDay: Bool) -> String {
-        switch condition {
+    private static func imageFromCondition(_ condition: String) -> String {
+        let isDay = isCurrentlyDay()
+        
+        switch condition.lowercased() {
         case let c where c.contains("clear") || c.contains("sunny"):
             return isDay ? morningSunny : nightWind
-            
         case let c where c.contains("cloud"):
-            if c.contains("few") || c.contains("scattered") {
-                return isDay ? morningSunny : nightWind
-            } else {
-                return isDay ? morningSunny : nightWind
-            }
-            
+            return isDay ? morningSunny : nightWind
         case let c where c.contains("rain"):
-            if c.contains("heavy") || c.contains("moderate") {
+            if c.contains("heavy") {
                 return isDay ? morningHeavyRain : nightRain
             } else {
                 return isDay ? morningLightRain : nightRain
             }
-            
         case let c where c.contains("drizzle") || c.contains("shower"):
             return isDay ? morningLightRain : nightRain
-            
         case let c where c.contains("storm") || c.contains("thunder"):
             return tornado
-            
         case let c where c.contains("snow") || c.contains("sleet"):
             return isDay ? morningHeavyRain : nightRain
-            
         case let c where c.contains("mist") || c.contains("fog") || c.contains("haze"):
             return isDay ? morningSunny : nightWind
-            
-        case let c where c.contains("wind"):
-            return isDay ? nightWind : nightWind
-            
         default:
             return isDay ? morningSunny : nightRain
         }
@@ -90,11 +74,14 @@ extension WeatherImages {
         return hour >= 6 && hour < 18
     }
     
-    // Helper method to get weather condition from weather data
     static func imageForWeatherData(_ weatherData: WeatherData) -> String {
         return imageForWeather(
             condition: weatherData.description,
             iconCode: weatherData.icon
         )
+    }
+    
+    static func getConsistentIcon(for weatherData: WeatherDisplayData, fromOriginalIcon originalIcon: String? = nil) -> String {
+        return weatherData.icon
     }
 }

@@ -26,7 +26,7 @@ extension WeatherViewController {
                 description: "Loading...",
                 high: "--",
                 low: "--",
-                icon: ""
+                icon: WeatherImages.morningSunny // Use consistent default
             )
         }
         
@@ -45,13 +45,16 @@ extension WeatherViewController {
                     switch result {
                     case .success(let weatherData):
                         if index < self?.weatherDataList.count ?? 0 {
+                            // Use the same icon logic as HomeViewController
+                            let weatherIcon = WeatherImages.imageForWeatherData(weatherData)
+                            
                             self?.weatherDataList[index] = WeatherDisplayData(
                                 cityName: "\(city.0), \(city.1)",
                                 temperature: weatherData.temperatureString,
                                 description: weatherData.description,
                                 high: "\(Int(weatherData.temperature + 5))°",
                                 low: "\(Int(weatherData.temperature - 5))°",
-                                icon: WeatherImages.randomImage()
+                                icon: weatherIcon
                             )
                             
                             let indexPath = IndexPath(row: index, section: 0)
@@ -103,7 +106,7 @@ extension WeatherViewController {
                     description: "Loading...",
                     high: "--",
                     low: "--",
-                    icon: ""
+                    icon: WeatherImages.morningSunny // Use consistent default
                 )
             }
             
@@ -116,7 +119,7 @@ extension WeatherViewController {
             weatherTableView.insertRows(at: indexPaths, with: .fade)
             currentPage += 1
             
-            // Load weather for new cities
+
             loadWeatherForSampleCities(moreCities)
         } else {
             hasMoreData = false

@@ -1,8 +1,8 @@
 //
-//  WeatherCellDelegate.swift
+//  WeatherViewController+CellDelegate.swift
 //  WeatherApp
 //
-//  Created by Phan Quyen on 20/08/2025.
+//  Created by Phan Quyen on 22/08/2025.
 //
 
 import UIKit
@@ -20,7 +20,6 @@ extension WeatherViewController: WeatherTableViewCellDelegate {
     private func addToFavorites(_ weatherData: WeatherDisplayData) {
         showLoading()
         
-        // Parse city name to get coordinates
         let cityName = weatherData.cityName.components(separatedBy: ",").first?.trimmingCharacters(in: .whitespaces) ?? weatherData.cityName
         
         CitySearchService.shared.searchCities(query: cityName) { [weak self] result in
