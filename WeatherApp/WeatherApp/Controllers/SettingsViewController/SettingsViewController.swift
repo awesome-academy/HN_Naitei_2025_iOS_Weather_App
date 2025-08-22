@@ -5,6 +5,13 @@
 //  Created by Phan Quyen on 06/08/2025.
 //
 
+//
+//  SettingsViewController.swift
+//  WeatherApp
+//
+//  Created by Phan Quyen on 06/08/2025.
+//
+
 import UIKit
 
 class SettingsViewController: BaseViewController {
@@ -15,6 +22,8 @@ class SettingsViewController: BaseViewController {
     var isNotificationEnabled = false
     var notificationTime = Date()
     var selectedDays: Set<Int> = [1, 2, 3, 4, 5]
+    
+    private let localStorage = LocalStorageService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,15 +76,15 @@ class SettingsViewController: BaseViewController {
     }
     
     func loadSettings() {
-        isAutomatedLocationEnabled = UserDefaults.standard.bool(forKey: "AutomatedLocationEnabled")
-        isNotificationEnabled = UserDefaults.standard.bool(forKey: "NotificationEnabled")
+        isAutomatedLocationEnabled = localStorage.loadBool(forKey: LocalStorageService.Keys.automatedLocationEnabled)
+        isNotificationEnabled = localStorage.loadBool(forKey: LocalStorageService.Keys.notificationEnabled)
         
-        if let timeData = UserDefaults.standard.data(forKey: "NotificationTime"),
+        if let timeData = localStorage.loadData(forKey: LocalStorageService.Keys.notificationTime),
            let savedTime = try? JSONDecoder().decode(Date.self, from: timeData) {
             notificationTime = savedTime
         }
         
-        if let daysArray = UserDefaults.standard.array(forKey: "SelectedDays") as? [Int] {
+        if let daysArray = localStorage.load(forKey: LocalStorageService.Keys.selectedDays, type: [Int].self) {
             selectedDays = Set(daysArray)
         }
         
@@ -83,13 +92,9 @@ class SettingsViewController: BaseViewController {
     }
     
     func saveSettings() {
-        UserDefaults.standard.set(isAutomatedLocationEnabled, forKey: "AutomatedLocationEnabled")
-        UserDefaults.standard.set(isNotificationEnabled, forKey: "NotificationEnabled")
-        
-        if let timeData = try? JSONEncoder().encode(notificationTime) {
-            UserDefaults.standard.set(timeData, forKey: "NotificationTime")
-        }
-        
-        UserDefaults.standard.set(Array(selectedDays), forKey: "SelectedDays")
+        localStorage.save(isAutomatedLocationEnabled, forKey: LocalStorageService.Keys.automatedLocationEnabled)
+        localStorage.save(isNotificationEnabled, forKey: LocalStorageService.Keys.notificationEnabled)
+        localStorage.save(notificationTime, forKey: LocalStorageService.Keys.notificationTime)
+        localStorage.save(Array(selectedDays), forKey: LocalStorageService.Keys.selectedDays)
     }
 }

@@ -12,32 +12,34 @@ extension WeatherImages {
     static func imageForWeather(condition: String, iconCode: String? = nil) -> String {
         let condition = condition.lowercased()
         let isDay = isCurrentlyDay()
-
+        
+        // Check if we have icon code from API (like "01d", "02n", etc.)
         if let iconCode = iconCode {
             return imageFromIconCode(iconCode)
         }
-
+        
+        // Fallback to condition-based logic
         return imageFromCondition(condition, isDay: isDay)
     }
     
     private static func imageFromIconCode(_ iconCode: String) -> String {
         let isDay = iconCode.hasSuffix("d")
-        let weatherCode = String(iconCode.dropLast())
+        let weatherCode = String(iconCode.dropLast()) // Remove 'd' or 'n'
         
         switch weatherCode {
         case "01": // clear sky
             return isDay ? morningSunny : nightWind
-        case "02", "03", "04":
+        case "02", "03", "04": // clouds
             return isDay ? morningSunny : nightWind
-        case "09":
+        case "09": // shower rain
             return isDay ? morningLightRain : nightRain
-        case "10":
+        case "10": // rain
             return isDay ? morningLightRain : nightRain
-        case "11":
+        case "11": // thunderstorm
             return tornado
-        case "13":
+        case "13": // snow
             return isDay ? morningHeavyRain : nightRain
-        case "50":
+        case "50": // mist/fog
             return isDay ? morningSunny : nightWind
         default:
             return isDay ? morningSunny : nightRain
@@ -92,12 +94,7 @@ extension WeatherImages {
     static func imageForWeatherData(_ weatherData: WeatherData) -> String {
         return imageForWeather(
             condition: weatherData.description,
-            iconCode: extractIconCodeFromWeatherData(weatherData)
+            iconCode: weatherData.icon
         )
-    }
-    
-    private static func extractIconCodeFromWeatherData(_ weatherData: WeatherData) -> String? {
-
-        return weatherData.icon
     }
 }
