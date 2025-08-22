@@ -40,7 +40,7 @@ extension SettingsViewController: AutoLocationCellDelegate, NotificationCellDele
     }
     
     func showNotificationTimePicker() {
-        // Tạo alert với space cho date picker
+
         let alert = UIAlertController(title: "Set Notification Time", message: "\n\n\n\n\n", preferredStyle: .alert)
         
         // Tạo date picker
@@ -49,8 +49,7 @@ extension SettingsViewController: AutoLocationCellDelegate, NotificationCellDele
         timePicker.preferredDatePickerStyle = .compact
         timePicker.date = notificationTime
         timePicker.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Thêm date picker vào alert view (KHÔNG dùng contentViewController)
+ 
         alert.view.addSubview(timePicker)
         
         // Set constraints
