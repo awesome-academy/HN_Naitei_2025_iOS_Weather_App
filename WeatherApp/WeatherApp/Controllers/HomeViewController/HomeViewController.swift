@@ -1,10 +1,12 @@
-
+//
+//  HomeViewController.swift
 //  WeatherApp
 //
 //  Created by Phan Quyen on 06/08/2025.
 //
 
 import UIKit
+import CoreLocation
 
 class HomeViewController: BaseViewController {
     
@@ -13,36 +15,25 @@ class HomeViewController: BaseViewController {
     @IBOutlet weak var weatherDescriptionLabel: UILabel!
     @IBOutlet weak var highLowTemperatureLabel: UILabel!
     @IBOutlet weak var weatherIconImageView: UIImageView!
-    
     @IBOutlet weak var hourlyWeeklySegmentedControl: UISegmentedControl!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private var currentWeatherData: WeatherDisplayData?
+    var currentWeatherData: WeatherDisplayData?
+    var selectedCityLocation: CityLocation?
+    var selectedWeatherData: WeatherDisplayData?
     
-    let hourlyData = [
-        HourlyDisplayData(time: "Now", temperature: "38°", icon: "sun.max"),
-        HourlyDisplayData(time: "18h", temperature: "36°", icon: "cloud.sun"),
-        HourlyDisplayData(time: "20h", temperature: "34°", icon: "cloud"),
-        HourlyDisplayData(time: "22h", temperature: "32°", icon: "moon")
-    ]
-    
-    let weeklyData = [
-        WeeklyDisplayData(day: "Today", high: "38°", low: "25°", icon: "sun.max"),
-        WeeklyDisplayData(day: "Tomorrow", high: "36°", low: "23°", icon: "cloud.sun"),
-        WeeklyDisplayData(day: "Wed", high: "34°", low: "22°", icon: "cloud.rain"),
-        WeeklyDisplayData(day: "Thu", high: "32°", low: "20°", icon: "cloud.rain")
-    ]
+    let locationManager = LocationManager.shared
+    let hourlyDataSource = HourlyForecastDataSource()
+    let dailyDataSource = DailyForecastDataSource()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
-        setupUI()
-        setupCollectionView()
-        setupPullToRefresh()
-        setupForecastBackground()
-        loadInitialData()
+        initializeViewController()
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        handleInitialDataLoad()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -51,8 +42,22 @@ class HomeViewController: BaseViewController {
     }
     
     deinit {
+        cleanupResources()
         collectionView?.delegate = nil
         collectionView?.dataSource = nil
+    }
+    
+    // MARK: - Setup
+    
+    private func initializeViewController() {
+        setupNavigationBar()
+        setupUI()
+        setupCollectionView()
+        setupDataSources()
+        setupLocationManager()
+        setupPullToRefresh()
+        setupForecastBackground()
+        handleNavigationFromOtherViews()
     }
     
     private func setupNavigationBar() {
@@ -69,34 +74,40 @@ class HomeViewController: BaseViewController {
     
     private func setupSegmentedControl() {
         hourlyWeeklySegmentedControl.selectedSegmentIndex = 0
+        hourlyWeeklySegmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
     }
     
     private func setupLabels() {
         cityNameLabel.text = ""
         mainTemperatureLabel.text = "--°"
-        weatherDescriptionLabel.text = "Loading..."
+        weatherDescriptionLabel.text = "Getting your location..."
         highLowTemperatureLabel.text = "H:--° L:--°"
     }
     
     private func setupImageViews() {
         weatherIconImageView.contentMode = .scaleAspectFit
-
+        weatherIconImageView.image = UIImage(named: WeatherImages.morningSunny)
     }
     
     private func setupCollectionView() {
-        guard let collectionView = collectionView else {
-            return
-        }
-        
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        guard let collectionView = collectionView else { return }
         collectionView.showsHorizontalScrollIndicator = false
-        
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
-
+            flowLayout.minimumInteritemSpacing = 8
+            flowLayout.minimumLineSpacing = 20
             flowLayout.sectionInset = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
         }
+    }
+    
+    private func setupDataSources() {
+        hourlyDataSource.delegate = self
+        dailyDataSource.delegate = self
+        updateCollectionViewDataSource()
+    }
+    
+    private func setupLocationManager() {
+        locationManager.delegate = self
     }
     
     private func setupPullToRefresh() {
@@ -106,79 +117,93 @@ class HomeViewController: BaseViewController {
         collectionView.refreshControl = refreshControl
     }
     
-    private func loadInitialData() {
-        showLoading()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.loadMockWeatherData()
-            self.hideLoading()
-        }
+    private func cleanupResources() {
+        locationManager.delegate = nil
     }
     
-    private func loadMockWeatherData() {
-        let mockWeatherData = WeatherDisplayData(
-            cityName: "Hanoi",
-            temperature: "38°",
-            description: "Mostly clear",
-            high: "40°",
-            low: "36°",
-
-        )
-        
-        updateUI(with: mockWeatherData)
-    }
+    // MARK: - Data Flow
     
-    private func updateUI(with data: WeatherDisplayData) {
-        guard Thread.isMainThread else {
-            DispatchQueue.main.async {
-                self.updateUI(with: data)
-            }
-            return
-        }
-        
-        currentWeatherData = data
-        
-        cityNameLabel.text = data.cityName
-        mainTemperatureLabel.text = data.temperature
-        weatherDescriptionLabel.text = data.description
-        highLowTemperatureLabel.text = "H:\(data.high) L:\(data.low)"
-        
-        if let iconImage = UIImage(named: data.icon) {
-            weatherIconImageView.image = iconImage
+    private func handleNavigationFromOtherViews() {
+        if let selectedCity = selectedCityLocation {
+            loadWeatherForSelectedCity(selectedCity)
+        } else if let selectedWeather = selectedWeatherData {
+            updateUI(with: selectedWeather)
+            loadForecastForWeatherData(selectedWeather)
         } else {
-
-        }
-        
-        collectionView.reloadData()
-    }
-    
-    private func refreshWeatherDataIfNeeded() {
-        if currentWeatherData == nil {
             loadInitialData()
         }
     }
     
-    @IBAction func segmentChanged(_ sender: Any) {
-
+    private func handleInitialDataLoad() {
+        if selectedCityLocation == nil && selectedWeatherData == nil {
+            requestLocationAndLoadWeather()
         }
+    }
+    
+    private func loadInitialData() {
+        showLoading()
+        requestLocationAndLoadWeather()
+    }
+    
+    private func requestLocationAndLoadWeather() {
+        guard !isLoading else { return }
+        weatherDescriptionLabel.text = "Getting your location..."
+        if locationManager.hasLocationPermission {
+            locationManager.requestCurrentLocation()
+        } else {
+            locationManager.requestLocationPermission()
+        }
+    }
+    
+    // MARK: - Update UI
+    
+    private func updateUI(with data: WeatherDisplayData) {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { self.updateUI(with: data) }
+            return
+        }
+        currentWeatherData = data
+        cityNameLabel.text = data.cityName
+        mainTemperatureLabel.text = data.temperature
+        weatherDescriptionLabel.text = data.description
+        highLowTemperatureLabel.text = "H:\(data.high) L:\(data.low)"
+        updateWeatherIcon(iconName: data.icon)
         collectionView.reloadData()
     }
     
-    @objc private func handlePullToRefresh() {
-        refreshWeatherData()
+    private func updateWeatherIcon(iconName: String) {
+        if let iconImage = UIImage(named: iconName) {
+            weatherIconImageView.image = iconImage
+        } else {
+            weatherIconImageView.image = UIImage(named: WeatherImages.morningSunny)
+        }
     }
     
-    @objc private func refreshWeatherData() {
-        guard !isLoading else {
-            collectionView.refreshControl?.endRefreshing()
-            return
+    private func updateCollectionViewDataSource() {
+        let isHourly = hourlyWeeklySegmentedControl.selectedSegmentIndex == 0
+        collectionView.dataSource = isHourly ? hourlyDataSource : dailyDataSource
+        collectionView.delegate = isHourly ? hourlyDataSource : dailyDataSource
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            self.collectionView.layoutIfNeeded()
         }
-        
-        isLoading = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.loadMockWeatherData()
-            self.isLoading = false
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func segmentChanged(_ sender: Any) {
+        updateCollectionViewDataSource()
+    }
+    
+    @objc private func handlePullToRefresh() {
+        if let selectedCity = selectedCityLocation {
+            loadWeatherForSelectedCity(selectedCity)
+        } else if let location = locationManager.getCurrentLocation() {
+            loadWeatherForLocation(location)
+        } else {
+            requestLocationAndLoadWeather()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.collectionView.refreshControl?.endRefreshing()
             self.showSuccessMessage("Weather updated")
         }

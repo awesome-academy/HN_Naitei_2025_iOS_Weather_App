@@ -26,7 +26,7 @@ extension FavoritesViewController {
                             description: weatherData.description,
                             high: "",
                             low: "",
-                            icon: self?.getWeatherIcon(from: weatherData) ?? WeatherImages.morningSunny
+                            icon: self?.getWeatherIcon(from: weatherData) ?? WeatherImages.imageForWeatherData(weatherData)
                         )
                         
                         self?.updateCell(at: indexPath, with: favorite, weatherData: displayData)
@@ -54,7 +54,6 @@ extension FavoritesViewController {
     }
     
     private func getWeatherIcon(from weatherData: WeatherData) -> String {
-        // Map weather condition to custom images
         let condition = weatherData.description.lowercased()
         let isDay = isCurrentlyDay()
         

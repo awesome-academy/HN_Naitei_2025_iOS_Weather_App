@@ -73,7 +73,7 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherCell", for: indexPath) as! WeatherTableViewCell
         
-        cell.delegate = self  // Set delegate
+        cell.delegate = self
         cell.configure(with: weatherDataList[indexPath.row])
         
         if indexPath.row == weatherDataList.count - 1 {

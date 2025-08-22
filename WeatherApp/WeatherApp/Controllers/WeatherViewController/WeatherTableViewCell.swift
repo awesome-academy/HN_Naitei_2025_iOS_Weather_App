@@ -59,8 +59,8 @@ class WeatherTableViewCell: UITableViewCell {
         currentWeatherData = data
         temperatureLabel.text = data.temperature
         cityLabel.text = data.cityName
-        
-        let imageName = WeatherImages.randomImage()
+
+        let imageName = WeatherImages.imageForWeatherData(data)
         weatherIconImageView.image = UIImage(named: imageName)
         
         checkFavoriteStatus(for: data.cityName)
