@@ -23,27 +23,37 @@ extension SettingsViewController: AutoLocationCellDelegate, NotificationCellDele
         saveSettings()
         
         if isEnabled {
-            requestNotificationPermission()
+            NotificationManager.shared.requestPermission { [weak self] granted in
+                if granted {
+                    self?.showSuccessAlert(message: "Notification permission granted")
+                    self?.scheduleNotifications()
+                } else {
+                    self?.isNotificationEnabled = false
+                    self?.saveSettings()
+                    self?.showErrorAlert(message: "Please enable notifications in Settings app")
+                    self?.settingsTableView.reloadData()
+                }
+            }
+        } else {
+            NotificationManager.shared.removeAllNotifications()
         }
         
         settingsTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
     }
     
     private func requestLocationPermission() {
-        // TODO: Implement CoreLocation permission request
-        showSuccessMessage("Location permission requested")
+        showSuccessAlert(message: "Location permission requested")
     }
     
-    private func requestNotificationPermission() {
-        // TODO: Implement notification permission request
-        showSuccessMessage("Notification permission requested")
+    private func scheduleNotifications() {
+        if isNotificationEnabled && !selectedDays.isEmpty {
+            NotificationManager.shared.scheduleDailyWeatherNotification(at: notificationTime, for: selectedDays)
+        }
     }
     
     func showNotificationTimePicker() {
-
         let alert = UIAlertController(title: "Set Notification Time", message: "\n\n\n\n\n", preferredStyle: .alert)
         
-        // Tạo date picker
         let timePicker = UIDatePicker()
         timePicker.datePickerMode = .time
         timePicker.preferredDatePickerStyle = .compact
@@ -52,20 +62,22 @@ extension SettingsViewController: AutoLocationCellDelegate, NotificationCellDele
  
         alert.view.addSubview(timePicker)
         
-        // Set constraints
         NSLayoutConstraint.activate([
             timePicker.centerXAnchor.constraint(equalTo: alert.view.centerXAnchor),
             timePicker.topAnchor.constraint(equalTo: alert.view.topAnchor, constant: 70)
         ])
         
-        // Thêm actions
         alert.addAction(UIAlertAction(title: "Set Time", style: .default) { [weak self] _ in
             self?.notificationTime = timePicker.date
             self?.saveSettings()
+            self?.scheduleNotifications()
             self?.settingsTableView.reloadData()
             
-            // Hiện day selection sau khi set time
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            self?.showSuccessAlert(message: "Notification time set to \(formatter.string(from: timePicker.date))")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self?.showDaySelectionAlert()
             }
         })
@@ -92,11 +104,16 @@ extension SettingsViewController: AutoLocationCellDelegate, NotificationCellDele
                     self?.selectedDays.insert(dayIndex)
                 }
                 self?.saveSettings()
+                self?.scheduleNotifications()
                 self?.settingsTableView.reloadData()
             })
         }
         
-        alert.addAction(UIAlertAction(title: "Done", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Done", style: .cancel) { [weak self] _ in
+            if let selectedDays = self?.selectedDays, !selectedDays.isEmpty {
+                self?.showSuccessAlert(message: "Daily notifications have been scheduled!")
+            }
+        })
         
         if let popover = alert.popoverPresentationController {
             popover.sourceView = view
