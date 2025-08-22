@@ -57,7 +57,7 @@ extension WeatherViewController: UISearchBarDelegate {
                 description: "Loading...",
                 high: "",
                 low: "",
-                icon: WeatherImages.morningSunny // Use consistent default
+                icon: WeatherImages.morningSunny // consistent default
             )
         }
         

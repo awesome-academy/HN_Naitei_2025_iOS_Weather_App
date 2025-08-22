@@ -12,6 +12,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        //debugPrint("App did finish launching")
         setupInitialConfigurations()
         setupNotifications()
         silenceWarnings()
@@ -34,6 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setupInitialConfigurations() {
+        //debugPrint("Setting up initial configurations...")
+    }
+    
+    private func setupNotifications() {
+        // TODO: Configure local or push notifications
+        // Example: UNUserNotificationCenter.current().requestAuthorization(...)
     }
 
     private func silenceWarnings() {

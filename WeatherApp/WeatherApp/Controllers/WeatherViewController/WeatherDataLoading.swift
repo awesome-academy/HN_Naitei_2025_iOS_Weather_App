@@ -26,7 +26,7 @@ extension WeatherViewController {
                 description: "Loading...",
                 high: "--",
                 low: "--",
-                icon: WeatherImages.morningSunny // Use consistent default
+                icon: WeatherImages.morningSunny // consistent default
             )
         }
         
@@ -106,7 +106,7 @@ extension WeatherViewController {
                     description: "Loading...",
                     high: "--",
                     low: "--",
-                    icon: WeatherImages.morningSunny // Use consistent default
+                    icon: WeatherImages.morningSunny // consistent default
                 )
             }
             
@@ -118,7 +118,6 @@ extension WeatherViewController {
             
             weatherTableView.insertRows(at: indexPaths, with: .fade)
             currentPage += 1
-            
 
             loadWeatherForSampleCities(moreCities)
         } else {

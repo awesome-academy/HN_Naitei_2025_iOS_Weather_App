@@ -26,25 +26,11 @@ class HomeViewController: BaseViewController {
     let hourlyDataSource = HourlyForecastDataSource()
     let dailyDataSource = DailyForecastDataSource()
     
-    private let mockHourlyData = [
-        HourlyDisplayData(time: "Now", temperature: "38°", icon: WeatherImages.morningSunny),
-        HourlyDisplayData(time: "18h", temperature: "36°", icon: WeatherImages.morningSunny),
-        HourlyDisplayData(time: "20h", temperature: "34°", icon: WeatherImages.nightWind),
-        HourlyDisplayData(time: "22h", temperature: "32°", icon: WeatherImages.nightWind)
-    ]
-    
-    private let mockWeeklyData = [
-        WeeklyDisplayData(day: "Today", high: "38°", low: "25°", icon: WeatherImages.morningSunny),
-        WeeklyDisplayData(day: "Tomorrow", high: "36°", low: "23°", icon: WeatherImages.morningSunny),
-        WeeklyDisplayData(day: "Wed", high: "34°", low: "22°", icon: WeatherImages.morningLightRain),
-        WeeklyDisplayData(day: "Thu", high: "32°", low: "20°", icon: WeatherImages.morningLightRain)
-    ]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeViewController()
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         handleInitialDataLoad()
@@ -57,7 +43,11 @@ class HomeViewController: BaseViewController {
     
     deinit {
         cleanupResources()
+        collectionView?.delegate = nil
+        collectionView?.dataSource = nil
     }
+    
+    // MARK: - Setup
     
     private func initializeViewController() {
         setupNavigationBar()
@@ -68,18 +58,6 @@ class HomeViewController: BaseViewController {
         setupPullToRefresh()
         setupForecastBackground()
         handleNavigationFromOtherViews()
-    }
-    
-    private func handleInitialDataLoad() {
-        if selectedCityLocation == nil && selectedWeatherData == nil {
-            requestLocationAndLoadWeather()
-        }
-    }
-    
-    private func cleanupResources() {
-        locationManager.delegate = nil
-        collectionView?.delegate = nil
-        collectionView?.dataSource = nil
     }
     
     private func setupNavigationBar() {
@@ -113,9 +91,7 @@ class HomeViewController: BaseViewController {
     
     private func setupCollectionView() {
         guard let collectionView = collectionView else { return }
-        
         collectionView.showsHorizontalScrollIndicator = false
-        
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
             flowLayout.minimumInteritemSpacing = 8
@@ -125,13 +101,13 @@ class HomeViewController: BaseViewController {
     }
     
     private func setupDataSources() {
-        hourlyDataSource.mockData = mockHourlyData
-        dailyDataSource.mockData = mockWeeklyData
-        
         hourlyDataSource.delegate = self
         dailyDataSource.delegate = self
-        
         updateCollectionViewDataSource()
+    }
+    
+    private func setupLocationManager() {
+        locationManager.delegate = self
     }
     
     private func setupPullToRefresh() {
@@ -141,9 +117,11 @@ class HomeViewController: BaseViewController {
         collectionView.refreshControl = refreshControl
     }
     
-    private func setupLocationManager() {
-        locationManager.delegate = self
+    private func cleanupResources() {
+        locationManager.delegate = nil
     }
+    
+    // MARK: - Data Flow
     
     private func handleNavigationFromOtherViews() {
         if let selectedCity = selectedCityLocation {
@@ -156,6 +134,12 @@ class HomeViewController: BaseViewController {
         }
     }
     
+    private func handleInitialDataLoad() {
+        if selectedCityLocation == nil && selectedWeatherData == nil {
+            requestLocationAndLoadWeather()
+        }
+    }
+    
     private func loadInitialData() {
         showLoading()
         requestLocationAndLoadWeather()
@@ -163,9 +147,7 @@ class HomeViewController: BaseViewController {
     
     private func requestLocationAndLoadWeather() {
         guard !isLoading else { return }
-        
         weatherDescriptionLabel.text = "Getting your location..."
-        
         if locationManager.hasLocationPermission {
             locationManager.requestCurrentLocation()
         } else {
@@ -173,171 +155,18 @@ class HomeViewController: BaseViewController {
         }
     }
     
-    func loadWeatherForLocation(_ location: CLLocation) {
-        showLoading()
-        weatherDescriptionLabel.text = "Loading weather..."
-        
-        WeatherRepository.shared.getCurrentWeather(
-            latitude: location.coordinate.latitude,
-            longitude: location.coordinate.longitude
-        ) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let weatherData):
-                    self?.handleWeatherSuccess(weatherData)
-                    self?.loadForecastData(location)
-                case .failure(let error):
-                    self?.handleWeatherError(error)
-                }
-            }
-        }
-    }
-    
-    func loadWeatherForSelectedCity(_ cityLocation: CityLocation) {
-        showLoading()
-        weatherDescriptionLabel.text = "Loading weather..."
-        
-        WeatherRepository.shared.getCurrentWeather(
-            latitude: cityLocation.coordinates.latitude,
-            longitude: cityLocation.coordinates.longitude
-        ) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let weatherData):
-                    self?.handleWeatherSuccess(weatherData)
-                    self?.loadForecastForSelectedCity(cityLocation)
-                case .failure(let error):
-                    self?.handleWeatherError(error)
-                }
-            }
-        }
-    }
-    
-    private func loadForecastData(_ location: CLLocation) {
-        WeatherRepository.shared.getForecast(
-            latitude: location.coordinate.latitude,
-            longitude: location.coordinate.longitude
-        ) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let (hourlyForecasts, dailyForecasts)):
-                    self?.updateForecastData(hourly: hourlyForecasts, daily: dailyForecasts)
-                case .failure:
-                    self?.useMockForecastData()
-                }
-                self?.hideLoading()
-            }
-        }
-    }
-    
-    private func loadForecastForSelectedCity(_ cityLocation: CityLocation) {
-        WeatherRepository.shared.getForecast(
-            latitude: cityLocation.coordinates.latitude,
-            longitude: cityLocation.coordinates.longitude
-        ) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let (hourlyForecasts, dailyForecasts)):
-                    self?.updateForecastData(hourly: hourlyForecasts, daily: dailyForecasts)
-                case .failure:
-                    self?.useMockForecastData()
-                }
-                self?.hideLoading()
-            }
-        }
-    }
-    
-    private func loadForecastForWeatherData(_ weatherData: WeatherDisplayData) {
-        if let city = getCityLocationFromWeatherData(weatherData) {
-            loadForecastForSelectedCity(city)
-        } else {
-            useMockForecastData()
-        }
-    }
-    
-    private func updateForecastData(hourly: [HourlyForecast], daily: [DailyForecast]) {
-        hourlyDataSource.hourlyForecasts = hourly
-        dailyDataSource.dailyForecasts = daily
-        
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.collectionView.layoutIfNeeded()
-        }
-    }
-    
-    private func useMockForecastData() {
-        hourlyDataSource.hourlyForecasts = []
-        dailyDataSource.dailyForecasts = []
-        
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
-    }
-    
-    private func handleWeatherSuccess(_ weatherData: WeatherData) {
-        let weatherIcon = WeatherImages.imageForWeatherData(weatherData)
-        
-        let displayData = WeatherDisplayData(
-            cityName: "\(weatherData.cityName), \(weatherData.country)",
-            temperature: weatherData.temperatureString,
-            description: weatherData.description,
-            high: String(format: "%.0f°", weatherData.temperature + 5),
-            low: String(format: "%.0f°", weatherData.temperature - 5),
-            icon: weatherIcon
-        )
-        
-        updateUI(with: displayData)
-    }
-    
-    private func handleWeatherError(_ error: WeatherAPIError) {
-        hideLoading()
-        weatherDescriptionLabel.text = "Unable to load weather"
-        
-        let errorMessage: String
-        switch error {
-        case .networkError:
-            errorMessage = "Network connection failed. Please check your internet connection."
-        case .cityNotFound:
-            errorMessage = "Weather data not available for this location."
-        case .invalidAPIKey:
-            errorMessage = "Weather service unavailable."
-        default:
-            errorMessage = "Failed to load weather data."
-        }
-        
-        showErrorAlert(message: errorMessage) { [weak self] in
-            self?.loadFallbackData()
-        }
-    }
-    
-    func loadFallbackData() {
-        let fallbackData = WeatherDisplayData(
-            cityName: "Current Location",
-            temperature: "--°",
-            description: "Weather unavailable",
-            high: "--°",
-            low: "--°",
-            icon: WeatherImages.morningSunny
-        )
-        updateUI(with: fallbackData)
-        useMockForecastData()
-    }
+    // MARK: - Update UI
     
     private func updateUI(with data: WeatherDisplayData) {
         guard Thread.isMainThread else {
-            DispatchQueue.main.async {
-                self.updateUI(with: data)
-            }
+            DispatchQueue.main.async { self.updateUI(with: data) }
             return
         }
-        
         currentWeatherData = data
-        
         cityNameLabel.text = data.cityName
         mainTemperatureLabel.text = data.temperature
         weatherDescriptionLabel.text = data.description
         highLowTemperatureLabel.text = "H:\(data.high) L:\(data.low)"
-        
         updateWeatherIcon(iconName: data.icon)
         collectionView.reloadData()
     }
@@ -346,41 +175,21 @@ class HomeViewController: BaseViewController {
         if let iconImage = UIImage(named: iconName) {
             weatherIconImageView.image = iconImage
         } else {
-            let fallbackIcon = WeatherImages.morningSunny
-            weatherIconImageView.image = UIImage(named: fallbackIcon)
+            weatherIconImageView.image = UIImage(named: WeatherImages.morningSunny)
         }
     }
     
     private func updateCollectionViewDataSource() {
         let isHourly = hourlyWeeklySegmentedControl.selectedSegmentIndex == 0
-        
-        if isHourly {
-            collectionView.dataSource = hourlyDataSource
-            collectionView.delegate = hourlyDataSource
-        } else {
-            collectionView.dataSource = dailyDataSource
-            collectionView.delegate = dailyDataSource
-        }
-        
+        collectionView.dataSource = isHourly ? hourlyDataSource : dailyDataSource
+        collectionView.delegate = isHourly ? hourlyDataSource : dailyDataSource
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.collectionView.layoutIfNeeded()
         }
     }
     
-    private func getCityLocationFromWeatherData(_ weatherData: WeatherDisplayData) -> CityLocation? {
-        let components = weatherData.cityName.components(separatedBy: ",")
-        let cityName = components.first?.trimmingCharacters(in: .whitespaces) ?? ""
-        let country = components.count > 1 ? components[1].trimmingCharacters(in: .whitespaces) : ""
-        
-        return CityLocation(
-            name: cityName,
-            country: country,
-            state: nil,
-            latitude: 0,
-            longitude: 0
-        )
-    }
+    // MARK: - Actions
     
     @objc private func segmentChanged(_ sender: Any) {
         updateCollectionViewDataSource()
@@ -394,9 +203,9 @@ class HomeViewController: BaseViewController {
         } else {
             requestLocationAndLoadWeather()
         }
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.collectionView.refreshControl?.endRefreshing()
+            self.showSuccessMessage("Weather updated")
         }
     }
 }
