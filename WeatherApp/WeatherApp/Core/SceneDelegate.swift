@@ -67,7 +67,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 viewController = storyboard.instantiateViewController(withIdentifier: "FavoritesViewController")
         case .settings:
-            viewController = SettingsViewController()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            viewController = storyboard.instantiateViewController(withIdentifier: "SettingsViewController")
         }
         
         let navController = UINavigationController(rootViewController: viewController)

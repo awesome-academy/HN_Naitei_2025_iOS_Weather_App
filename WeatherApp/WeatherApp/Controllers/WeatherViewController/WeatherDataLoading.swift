@@ -42,7 +42,10 @@ extension WeatherViewController {
                 longitude: city.3
             ) { [weak self] result in
                 DispatchQueue.main.async {
-
+                    switch result {
+                    case .success(let weatherData):
+                        if index < self?.weatherDataList.count ?? 0 {
+                            self?.weatherDataList[index] = WeatherDisplayData(
                                 cityName: "\(city.0), \(city.1)",
                                 temperature: weatherData.temperatureString,
                                 description: weatherData.description,
@@ -50,7 +53,13 @@ extension WeatherViewController {
                                 low: "\(Int(weatherData.temperature - 5))°",
                                 icon: WeatherImages.randomImage()
                             )
-
+                            
+                            let indexPath = IndexPath(row: index, section: 0)
+                            self?.weatherTableView.reloadRows(at: [indexPath], with: .fade)
+                        }
+                    case .failure:
+                        if index < self?.weatherDataList.count ?? 0 {
+                            self?.weatherDataList[index] = WeatherDisplayData(
                                 cityName: "\(city.0), \(city.1)",
                                 temperature: "N/A",
                                 description: "Unable to load",
@@ -58,7 +67,10 @@ extension WeatherViewController {
                                 low: "--",
                                 icon: WeatherImages.morningSunny
                             )
-
+                            
+                            let indexPath = IndexPath(row: index, section: 0)
+                            self?.weatherTableView.reloadRows(at: [indexPath], with: .fade)
+                        }
                     }
                 }
             }
@@ -67,7 +79,9 @@ extension WeatherViewController {
     
     func loadMoreDataIfNeeded() {
         guard !isLoadingMore && hasMoreData else { return }
-
+        
+        isLoadingMore = true
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.loadNextBatch()
         }
@@ -98,7 +112,11 @@ extension WeatherViewController {
             let indexPaths = (startIndex..<weatherDataList.count).map {
                 IndexPath(row: $0, section: 0)
             }
-
+            
+            weatherTableView.insertRows(at: indexPaths, with: .fade)
+            currentPage += 1
+            
+            // Load weather for new cities
             loadWeatherForSampleCities(moreCities)
         } else {
             hasMoreData = false
