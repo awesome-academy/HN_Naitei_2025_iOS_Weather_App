@@ -247,7 +247,7 @@ class HomeViewController: BaseViewController {
         }
     }
     
-    private func loadForecastForWeatherData(_ weatherData: WeatherDisplayData) {
+    func loadForecastForWeatherData(_ weatherData: WeatherDisplayData) {
         if let city = getCityLocationFromWeatherData(weatherData) {
             loadForecastForSelectedCity(city)
         } else {
@@ -323,7 +323,7 @@ class HomeViewController: BaseViewController {
         useMockForecastData()
     }
     
-    private func updateUI(with data: WeatherDisplayData) {
+    func updateUI(with data: WeatherDisplayData) {
         guard Thread.isMainThread else {
             DispatchQueue.main.async {
                 self.updateUI(with: data)
@@ -368,7 +368,7 @@ class HomeViewController: BaseViewController {
         }
     }
     
-    private func getCityLocationFromWeatherData(_ weatherData: WeatherDisplayData) -> CityLocation? {
+    func getCityLocationFromWeatherData(_ weatherData: WeatherDisplayData) -> CityLocation? {
         let components = weatherData.cityName.components(separatedBy: ",")
         let cityName = components.first?.trimmingCharacters(in: .whitespaces) ?? ""
         let country = components.count > 1 ? components[1].trimmingCharacters(in: .whitespaces) : ""

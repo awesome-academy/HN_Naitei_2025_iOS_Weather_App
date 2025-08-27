@@ -11,6 +11,8 @@ import UserNotifications
 class NotificationManager: NSObject {
     static let shared = NotificationManager()
     
+    private var handledNotificationIdentifiers = Set<String>()
+    
     private override init() {
         super.init()
         UNUserNotificationCenter.current().delegate = self
@@ -90,16 +92,24 @@ class NotificationManager: NSObject {
 extension NotificationManager: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        if notification.request.content.userInfo["shouldFetchWeather"] as? Bool == true {
-            WeatherNotificationService.shared.sendCurrentWeatherNotification()
-        }
+        // Only handle the notification display, don't trigger weather fetch here to avoid duplicates
         completionHandler([.banner, .sound, .badge])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         if response.notification.request.content.userInfo["shouldFetchWeather"] as? Bool == true {
-            WeatherNotificationService.shared.sendCurrentWeatherNotification()
+            let identifier = response.notification.request.identifier
+
+            if !handledNotificationIdentifiers.contains(identifier) {
+                handledNotificationIdentifiers.insert(identifier)
+                WeatherNotificationService.shared.sendCurrentWeatherNotification()
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+                    self?.handledNotificationIdentifiers.remove(identifier)
+                }
+            }
         }
+        
         print("User tapped notification")
         completionHandler()
     }

@@ -22,10 +22,8 @@ class CityNavigationCoordinator {
             homeViewController.selectedWeatherData = nil
             
             tabBarController.selectedIndex = 0
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                homeViewController.viewDidLoad()
-            }
+
+            homeViewController.updateDataForSelectedCity()
         }
     }
     
@@ -39,10 +37,8 @@ class CityNavigationCoordinator {
             homeViewController.selectedCityLocation = nil
             
             tabBarController.selectedIndex = 0
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                homeViewController.viewDidLoad()
-            }
+
+            homeViewController.updateDataForSelectedWeather()
         }
     }
 }
