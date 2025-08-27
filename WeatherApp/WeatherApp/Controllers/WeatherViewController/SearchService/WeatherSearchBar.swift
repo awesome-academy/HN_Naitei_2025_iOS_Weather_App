@@ -64,7 +64,7 @@ extension WeatherViewController: UISearchBarDelegate {
         weatherTableView.reloadData()
         
         if cities.isEmpty {
-            showErrorAlert(message: "No cities")
+            showErrorAlert(message: "No cities found")
         } else {
             loadWeatherForCities(cities)
         }
