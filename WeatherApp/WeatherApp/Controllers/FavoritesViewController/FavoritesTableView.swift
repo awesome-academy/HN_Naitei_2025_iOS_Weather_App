@@ -53,9 +53,11 @@ extension FavoritesViewController: UITableViewDataSource, UITableViewDelegate {
         
         if !tableView.isEditing {
             let favorite = favoritesList[indexPath.row]
-            showDetailAlert(
-                title: favorite.displayName,
-                message: "Temperature updated\nCoordinates: \(favorite.coordinatesString)\nAdded: \(DateFormatter.localizedString(from: favorite.dateAdded ?? Date(), dateStyle: .medium, timeStyle: .none))"
+            let cityLocation = favorite.toCityLocation()
+            
+            CityNavigationCoordinator.shared.navigateToHomeWith(
+                cityLocation: cityLocation,
+                from: self
             )
         }
     }

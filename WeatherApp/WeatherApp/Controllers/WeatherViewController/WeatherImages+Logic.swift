@@ -14,7 +14,7 @@ extension WeatherImages {
         let isDay = isCurrentlyDay()
         
         // Check if we have icon code from API (like "01d", "02n", etc.)
-        if let iconCode = iconCode {
+        if let iconCode = iconCode, !iconCode.isEmpty {
             return imageFromIconCode(iconCode)
         }
         

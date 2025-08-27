@@ -12,22 +12,37 @@ struct HourlyDisplayData {
     let temperature: String
     let icon: String
     
+    init(time: String, temperature: String, icon: String) {
+        self.time = time
+        self.temperature = temperature
+        self.icon = icon
+    }
+    
+    init(from hourlyForecast: HourlyForecast) {
+        self.time = hourlyForecast.isCurrentHour ? "Now" : hourlyForecast.hourString
+        self.temperature = hourlyForecast.temperatureString
+        self.icon = WeatherImages.imageForWeather(
+            condition: hourlyForecast.description,
+            iconCode: hourlyForecast.icon
+        )
+    }
+    
     var weatherIcon: String {
         switch icon {
-        case "sun.max":
-            return "○"
-        case "cloud.sun":
-            return "◐"
-        case "cloud":
-            return "●"
-        case "cloud.rain":
-            return "¤"
-        case "moon":
-            return "◑"
-        case "snow":
-            return "❋"
+        case .morningSunny:
+            return "☀"
+        case .nightWind:
+            return "☽"
+        case .morningLightRain:
+            return "🌧"
+        case .morningHeavyRain:
+            return "⛈"
+        case .nightRain:
+            return "🌧"
+        case .tornado:
+            return "⚡"
         default:
-            return "○"
+            return "☀"
         }
     }
 }

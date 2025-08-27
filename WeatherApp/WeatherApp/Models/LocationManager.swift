@@ -50,7 +50,9 @@ class LocationManager: NSObject {
     func requestLocationPermission() {
         switch authorizationStatus {
         case .notDetermined:
-            coreLocationManager.requestWhenInUseAuthorization()
+            DispatchQueue.main.async {
+                self.coreLocationManager.requestWhenInUseAuthorization()
+            }
         case .denied, .restricted:
             delegate?.locationManager(self, didFailWithError: .permissionDenied)
         case .authorizedWhenInUse, .authorizedAlways:
@@ -79,7 +81,9 @@ class LocationManager: NSObject {
         }
         
         isRequestingLocation = true
-        coreLocationManager.requestLocation()
+        DispatchQueue.main.async {
+            self.coreLocationManager.requestLocation()
+        }
     }
     
     func getCurrentLocation() -> CLLocation? {

@@ -48,8 +48,21 @@ struct HourlyForecast {
         return formatter.string(from: time)
     }
     
+    var hourString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "ha"
+        return formatter.string(from: time).lowercased()
+    }
+    
     var temperatureString: String {
         return String(format: "%.0f°", temperature)
+    }
+    
+    var isCurrentHour: Bool {
+        let calendar = Calendar.current
+        let currentHour = calendar.component(.hour, from: Date())
+        let forecastHour = calendar.component(.hour, from: time)
+        return currentHour == forecastHour
     }
 }
 
@@ -82,8 +95,16 @@ struct DailyForecast {
     
     var dayString: String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE"
-        return formatter.string(from: date)
+        let calendar = Calendar.current
+        
+        if calendar.isDateInToday(date) {
+            return "Today"
+        } else if calendar.isDateInTomorrow(date) {
+            return "Tomorrow"
+        } else {
+            formatter.dateFormat = "EEEE"
+            return formatter.string(from: date)
+        }
     }
     
     var temperatureRangeString: String {

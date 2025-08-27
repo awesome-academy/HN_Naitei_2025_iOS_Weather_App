@@ -97,3 +97,5 @@ protocol WeatherTableViewCellDelegate: AnyObject {
     func didTapAddFavorite(_ weatherData: WeatherDisplayData)
     func didTapRemoveFavorite(_ weatherData: WeatherDisplayData)
 }
+
+

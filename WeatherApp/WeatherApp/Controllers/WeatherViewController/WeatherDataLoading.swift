@@ -1,127 +1,63 @@
 //
-//   WeatherDataLoading.swift
+//  HourlyForecastDataSource.swift
 //  WeatherApp
 //
-//  Created by Phan Quyen on 19/08/2025.
+//  Created by Phan Quyen on 22/08/2025.
 //
 
 import UIKit
 
-extension WeatherViewController {
+class HourlyForecastDataSource: NSObject {
+    weak var delegate: ForecastDataSourceDelegate?
     
-    func loadSampleData() {
-        let sampleCities = [
-            ("Montreal", "Canada", 45.5017, -73.5673),
-            ("Toronto", "Canada", 43.6532, -79.3832),
-            ("Tokyo", "Japan", 35.6762, 139.6503),
-            ("New York", "USA", 40.7128, -74.0060),
-            ("London", "UK", 51.5074, -0.1278),
-            ("Paris", "France", 48.8566, 2.3522)
-        ]
-        
-        weatherDataList = sampleCities.prefix(itemsPerPage).map { city in
-            WeatherDisplayData(
-                cityName: "\(city.0), \(city.1)",
-                temperature: "--°",
-                description: "Loading...",
-                high: "--",
-                low: "--",
-                icon: ""
-            )
+    var hourlyForecasts: [HourlyForecast] = []
+    var mockData: [HourlyDisplayData] = []
+    
+    private var displayData: [HourlyDisplayData] {
+        if !hourlyForecasts.isEmpty {
+            return hourlyForecasts.prefix(8).map { forecast in
+                HourlyDisplayData(from: forecast)
+            }
         }
-        
-        weatherTableView.reloadData()
+        return mockData
+    }
+}
 
-        loadWeatherForSampleCities(Array(sampleCities.prefix(itemsPerPage)))
+// MARK: - UICollectionViewDataSource
+extension HourlyForecastDataSource: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return displayData.count
     }
     
-    private func loadWeatherForSampleCities(_ cities: [(String, String, Double, Double)]) {
-        for (index, city) in cities.enumerated() {
-            WeatherRepository.shared.getCurrentWeather(
-                latitude: city.2,
-                longitude: city.3
-            ) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let weatherData):
-                        if index < self?.weatherDataList.count ?? 0 {
-                            self?.weatherDataList[index] = WeatherDisplayData(
-                                cityName: "\(city.0), \(city.1)",
-                                temperature: weatherData.temperatureString,
-                                description: weatherData.description,
-                                high: "\(Int(weatherData.temperature + 5))°",
-                                low: "\(Int(weatherData.temperature - 5))°",
-                                icon: WeatherImages.randomImage()
-                            )
-                            
-                            let indexPath = IndexPath(row: index, section: 0)
-                            self?.weatherTableView.reloadRows(at: [indexPath], with: .fade)
-                        }
-                    case .failure:
-                        if index < self?.weatherDataList.count ?? 0 {
-                            self?.weatherDataList[index] = WeatherDisplayData(
-                                cityName: "\(city.0), \(city.1)",
-                                temperature: "N/A",
-                                description: "Unable to load",
-                                high: "--",
-                                low: "--",
-                                icon: WeatherImages.morningSunny
-                            )
-                            
-                            let indexPath = IndexPath(row: index, section: 0)
-                            self?.weatherTableView.reloadRows(at: [indexPath], with: .fade)
-                        }
-                    }
-                }
-            }
-        }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastCell", for: indexPath) as! ForecastCollectionCell
+        cell.configureHourly(with: displayData[indexPath.item])
+        return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+extension HourlyForecastDataSource: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        delegate?.didSelectHourlyForecast(displayData[indexPath.item], at: indexPath.item)
+    }
+}
+
+extension HourlyForecastDataSource: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 80, height: 120)
     }
     
-    func loadMoreDataIfNeeded() {
-        guard !isLoadingMore && hasMoreData else { return }
-        
-        isLoadingMore = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.loadNextBatch()
-        }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
     }
     
-    func loadNextBatch() {
-        let moreCities = [
-            ("Amsterdam", "Netherlands", 52.3676, 4.9041),
-            ("Vienna", "Austria", 48.2082, 16.3738),
-            ("Prague", "Czech Republic", 50.0755, 14.4378)
-        ]
-        
-        if currentPage < 4 {
-            let startIndex = weatherDataList.count
-            let newCities = moreCities.map { city in
-                WeatherDisplayData(
-                    cityName: "\(city.0), \(city.1)",
-                    temperature: "--°",
-                    description: "Loading...",
-                    high: "--",
-                    low: "--",
-                    icon: ""
-                )
-            }
-            
-            weatherDataList.append(contentsOf: newCities)
-            
-            let indexPaths = (startIndex..<weatherDataList.count).map {
-                IndexPath(row: $0, section: 0)
-            }
-            
-            weatherTableView.insertRows(at: indexPaths, with: .fade)
-            currentPage += 1
-            
-            // Load weather for new cities
-            loadWeatherForSampleCities(moreCities)
-        } else {
-            hasMoreData = false
-        }
-        
-        isLoadingMore = false
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
     }
 }

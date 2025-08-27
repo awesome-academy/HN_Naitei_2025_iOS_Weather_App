@@ -20,13 +20,16 @@ extension FavoritesViewController {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let weatherData):
+                        // Use the same icon logic as other views
+                        let weatherIcon = WeatherImages.imageForWeatherData(weatherData)
+                        
                         let displayData = WeatherDisplayData(
                             cityName: favorite.displayName,
                             temperature: weatherData.temperatureString,
                             description: weatherData.description,
                             high: "",
                             low: "",
-                            icon: self?.getWeatherIcon(from: weatherData) ?? WeatherImages.morningSunny
+                            icon: weatherIcon
                         )
                         
                         self?.updateCell(at: indexPath, with: favorite, weatherData: displayData)
@@ -50,31 +53,6 @@ extension FavoritesViewController {
     private func updateCell(at indexPath: IndexPath, with favorite: FavoriteCity, weatherData: WeatherDisplayData) {
         if let cell = favoritesTableView.cellForRow(at: indexPath) as? FavoritesTableViewCell {
             cell.configure(with: favorite, weatherData: weatherData)
-        }
-    }
-    
-    private func getWeatherIcon(from weatherData: WeatherData) -> String {
-        // Map weather condition to custom images
-        let condition = weatherData.description.lowercased()
-        let isDay = isCurrentlyDay()
-        
-        switch condition {
-        case let c where c.contains("rain"):
-            if c.contains("heavy") {
-                return isDay ? WeatherImages.morningHeavyRain : WeatherImages.nightRain
-            } else {
-                return isDay ? WeatherImages.morningLightRain : WeatherImages.nightRain
-            }
-        case let c where c.contains("wind"):
-            return isDay ? WeatherImages.tornado : WeatherImages.nightWind
-        case let c where c.contains("clear") || c.contains("sun"):
-            return isDay ? WeatherImages.morningSunny : WeatherImages.nightWind
-        case let c where c.contains("cloud"):
-            return isDay ? WeatherImages.morningSunny : WeatherImages.nightWind
-        case let c where c.contains("storm"):
-            return WeatherImages.tornado
-        default:
-            return isDay ? WeatherImages.morningSunny : WeatherImages.nightRain
         }
     }
     

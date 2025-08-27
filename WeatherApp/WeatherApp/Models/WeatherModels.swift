@@ -13,7 +13,7 @@ struct WeatherResponse: Codable {
     let main: MainWeatherInfo
     let wind: Wind
     let dt: Int
-    let sys: SystemInfo
+    let sys: SystemInfo?
     let name: String
     let cod: Int
 }
@@ -49,13 +49,34 @@ struct MainWeatherInfo: Codable {
 
 struct Wind: Codable {
     let speed: Double
-    let deg: Int
+    let deg: Int?
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        speed = try container.decode(Double.self, forKey: .speed)
+        deg = try container.decodeIfPresent(Int.self, forKey: .deg) ?? 0
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case speed, deg
+    }
 }
 
 struct SystemInfo: Codable {
-    let country: String
-    let sunrise: Int
-    let sunset: Int
+    let country: String?
+    let sunrise: Int?
+    let sunset: Int?
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        country = try container.decodeIfPresent(String.self, forKey: .country) ?? "Unknown"
+        sunrise = try container.decodeIfPresent(Int.self, forKey: .sunrise)
+        sunset = try container.decodeIfPresent(Int.self, forKey: .sunset)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case country, sunrise, sunset
+    }
 }
 
 struct WeatherData {
@@ -70,7 +91,7 @@ struct WeatherData {
     
     init(from response: WeatherResponse) {
         self.cityName = response.name
-        self.country = response.sys.country
+        self.country = response.sys?.country ?? "Unknown"
         self.temperature = response.main.temp
         self.description = response.weather.first?.description.capitalized ?? ""
         self.icon = response.weather.first?.icon ?? ""
