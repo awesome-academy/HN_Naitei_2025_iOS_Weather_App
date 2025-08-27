@@ -55,17 +55,17 @@ class ForecastCollectionCell: UICollectionViewCell {
     
     private func getWeatherSymbol(for icon: String) -> String {
         switch icon {
-        case WeatherImages.morningSunny:
+        case .morningSunny:
             return "☀"
-        case WeatherImages.nightWind:
+        case .nightWind:
             return "☽"
-        case WeatherImages.morningLightRain:
+        case .morningLightRain:
             return "🌧"
-        case WeatherImages.morningHeavyRain:
+        case .morningHeavyRain:
             return "⛈"
-        case WeatherImages.nightRain:
+        case .nightRain:
             return "🌧"
-        case WeatherImages.tornado:
+        case .tornado:
             return "⚡"
         default:
             return "☀"
