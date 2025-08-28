@@ -23,12 +23,23 @@ class WeatherViewController: BaseViewController {
         setupNavigationBar()
         setupUI()
         setupTableView()
-        loadSampleData()
+        setupSearchBarWithHistory()
+        loadInitialData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("Weather view appeared")
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { _ in
+            let dropdown = objc_getAssociatedObject(self, &AssociatedKeys.dropdownView) as? SearchDropdownView
+            dropdown?.hide()
+            self.weatherTableView.reloadData()
+        }, completion: nil)
     }
     
     private func setupNavigationBar() {
@@ -60,6 +71,77 @@ class WeatherViewController: BaseViewController {
         weatherTableView.separatorStyle = .none
         weatherTableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         weatherTableView.showsVerticalScrollIndicator = false
+        weatherTableView.estimatedRowHeight = 120
+        weatherTableView.rowHeight = UITableView.automaticDimension
+    }
+    
+    func loadInitialData() {
+        let sampleCities = [
+            ("Montreal", "Canada", 45.5017, -73.5673),
+            ("Toronto", "Canada", 43.6532, -79.3832),
+            ("Tokyo", "Japan", 35.6762, 139.6503),
+            ("New York", "USA", 40.7128, -74.0060),
+            ("London", "UK", 51.5074, -0.1278),
+            ("Paris", "France", 48.8566, 2.3522)
+        ]
+        
+        weatherDataList = sampleCities.prefix(itemsPerPage).map { city in
+            WeatherDisplayData(
+                cityName: "\(city.0), \(city.1)",
+                temperature: "--°",
+                description: "Loading...",
+                high: "--",
+                low: "--",
+                icon: WeatherImages.morningSunny
+            )
+        }
+        
+        weatherTableView.reloadData()
+        loadWeatherForSampleCities(Array(sampleCities.prefix(itemsPerPage)))
+    }
+    
+    private func loadWeatherForSampleCities(_ cities: [(String, String, Double, Double)]) {
+        for (index, city) in cities.enumerated() {
+            WeatherRepository.shared.getCurrentWeather(
+                latitude: city.2,
+                longitude: city.3
+            ) { [weak self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let weatherData):
+                        if index < self?.weatherDataList.count ?? 0 {
+                            let weatherIcon = WeatherImages.imageForWeatherData(weatherData)
+                            
+                            self?.weatherDataList[index] = WeatherDisplayData(
+                                cityName: "\(city.0), \(city.1)",
+                                temperature: weatherData.temperatureString,
+                                description: weatherData.description,
+                                high: "\(Int(weatherData.temperature + 5))°",
+                                low: "\(Int(weatherData.temperature - 5))°",
+                                icon: weatherIcon
+                            )
+                            
+                            let indexPath = IndexPath(row: index, section: 0)
+                            self?.weatherTableView.reloadRows(at: [indexPath], with: .fade)
+                        }
+                    case .failure:
+                        if index < self?.weatherDataList.count ?? 0 {
+                            self?.weatherDataList[index] = WeatherDisplayData(
+                                cityName: "\(city.0), \(city.1)",
+                                temperature: "N/A",
+                                description: "Unable to load",
+                                high: "--",
+                                low: "--",
+                                icon: WeatherImages.morningSunny
+                            )
+                            
+                            let indexPath = IndexPath(row: index, section: 0)
+                            self?.weatherTableView.reloadRows(at: [indexPath], with: .fade)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -85,8 +167,15 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let screenHeight = UIScreen.main.bounds.height
-        let availableHeight = screenHeight - 200
-        return (availableHeight / 4.5) - 35
+        let screenWidth = UIScreen.main.bounds.width
+        let isLandscape = screenWidth > screenHeight
+        
+        if isLandscape {
+            return min(80, screenHeight / 6)
+        } else {
+            let availableHeight = screenHeight - 200
+            return max(100, (availableHeight / 4.5) - 35)
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -189,4 +278,8 @@ extension WeatherViewController: WeatherTableViewCellDelegate {
             }
         }
     }
+}
+
+private struct AssociatedKeys {
+    static var dropdownView = "dropdownView"
 }

@@ -4,7 +4,6 @@
 //
 //  Created by Phan Quyen on 18/08/2025.
 //
-
 import UIKit
 
 class ForecastCollectionCell: UICollectionViewCell {
@@ -55,17 +54,17 @@ class ForecastCollectionCell: UICollectionViewCell {
     
     private func getWeatherSymbol(for icon: String) -> String {
         switch icon {
-        case .morningSunny:
+        case WeatherImages.morningSunny:
             return "☀"
-        case .nightWind:
+        case WeatherImages.nightWind:
             return "☽"
-        case .morningLightRain:
+        case WeatherImages.morningLightRain:
             return "🌧"
-        case .morningHeavyRain:
+        case WeatherImages.morningHeavyRain:
             return "⛈"
-        case .nightRain:
+        case WeatherImages.nightRain:
             return "🌧"
-        case .tornado:
+        case WeatherImages.tornado:
             return "⚡"
         default:
             return "☀"

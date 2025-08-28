@@ -128,4 +128,4 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         delegate?.locationManager(self, didChangeAuthorizationStatus: status)
     }
-}
+

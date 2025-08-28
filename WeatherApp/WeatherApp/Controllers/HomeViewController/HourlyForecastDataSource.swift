@@ -57,7 +57,7 @@ extension HourlyForecastDataSource: UICollectionViewDelegateFlowLayout {
         return 20
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> CGSize {
         return UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
     }
 }

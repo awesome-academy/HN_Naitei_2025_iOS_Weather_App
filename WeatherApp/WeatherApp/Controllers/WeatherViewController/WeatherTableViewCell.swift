@@ -98,4 +98,3 @@ protocol WeatherTableViewCellDelegate: AnyObject {
     func didTapRemoveFavorite(_ weatherData: WeatherDisplayData)
 }
 
-

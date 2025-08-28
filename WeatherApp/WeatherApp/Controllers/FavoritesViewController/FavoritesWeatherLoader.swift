@@ -4,7 +4,6 @@
 //
 //  Created by Phan Quyen on 20/08/2025.
 //
-
 import UIKit
 
 extension FavoritesViewController {

@@ -123,4 +123,4 @@ extension SettingsViewController: AutoLocationCellDelegate, NotificationCellDele
         
         present(alert, animated: true)
     }
-}
+

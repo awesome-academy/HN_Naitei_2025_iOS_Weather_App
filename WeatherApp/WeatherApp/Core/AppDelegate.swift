@@ -34,12 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setupInitialConfigurations() {
-        // Setup initial app configurations
-    }
-    
-    private func setupNotifications() {
-        // Initialize notification manager
-        let _ = NotificationManager.shared
+
     }
 
     private func silenceWarnings() {

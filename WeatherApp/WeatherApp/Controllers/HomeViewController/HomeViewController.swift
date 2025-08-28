@@ -386,7 +386,7 @@ class HomeViewController: BaseViewController {
         updateCollectionViewDataSource()
     }
     
-    @objc private func handlePullToRefresh() {
+   @objc private func handlePullToRefresh() {
         if let selectedCity = selectedCityLocation {
             loadWeatherForSelectedCity(selectedCity)
         } else if let location = locationManager.getCurrentLocation() {
