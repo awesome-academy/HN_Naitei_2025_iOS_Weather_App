@@ -1,50 +1,45 @@
 //
-//  HourlyForecastDataSource.swift
+//  HomeViewExtensions.swift
 //  WeatherApp
 //
-//  Created by Phan Quyen on 22/08/2025.
+//  Created by Phan Quyen on 18/08/2025.
 //
 
 import UIKit
 
-class HourlyForecastDataSource: NSObject {
-    weak var delegate: ForecastDataSourceDelegate?
-    
-    var hourlyForecasts: [HourlyForecast] = []
-    var mockData: [HourlyDisplayData] = []
-    
-    private var displayData: [HourlyDisplayData] {
-        if !hourlyForecasts.isEmpty {
-            return hourlyForecasts.prefix(8).map { forecast in
-                HourlyDisplayData(from: forecast)
-            }
-        }
-        return mockData
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-extension HourlyForecastDataSource: UICollectionViewDataSource {
+extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return displayData.count
+        return hourlyWeeklySegmentedControl.selectedSegmentIndex == 0 ? hourlyData.count : weeklyData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastCell", for: indexPath) as! ForecastCollectionCell
-        cell.configureHourly(with: displayData[indexPath.item])
+        
+        if hourlyWeeklySegmentedControl.selectedSegmentIndex == 0 {
+            cell.configureHourly(with: hourlyData[indexPath.item])
+        } else {
+            cell.configureWeekly(with: weeklyData[indexPath.item])
+        }
+        
         return cell
     }
 }
 
-// MARK: - UICollectionViewDelegate
-extension HourlyForecastDataSource: UICollectionViewDelegate {
+extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        delegate?.didSelectHourlyForecast(displayData[indexPath.item], at: indexPath.item)
+        
+        if hourlyWeeklySegmentedControl.selectedSegmentIndex == 0 {
+            let hourlyItem = hourlyData[indexPath.item]
+            showDetailAlert(title: "Hourly Forecast", message: "\(hourlyItem.time): \(hourlyItem.temperature)")
+        } else {
+            let weeklyItem = weeklyData[indexPath.item]
+            showDetailAlert(title: "Daily Forecast", message: "\(weeklyItem.day): \(weeklyItem.high)/\(weeklyItem.low)")
+        }
     }
 }
 
-extension HourlyForecastDataSource: UICollectionViewDelegateFlowLayout {
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 120)
     }
@@ -57,7 +52,7 @@ extension HourlyForecastDataSource: UICollectionViewDelegateFlowLayout {
         return 20
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
     }
 }

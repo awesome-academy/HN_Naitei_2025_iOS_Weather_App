@@ -90,4 +90,4 @@ class SettingsViewController: BaseViewController {
         localStorage.save(notificationTime, forKey: LocalStorageService.Keys.notificationTime)
         localStorage.save(Array(selectedDays), forKey: LocalStorageService.Keys.selectedDays)
     }
-}
+

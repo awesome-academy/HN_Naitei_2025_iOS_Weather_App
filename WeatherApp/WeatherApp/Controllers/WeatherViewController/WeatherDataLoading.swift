@@ -1,5 +1,5 @@
 //
-//   WeatherDataLoading.swift
+//  WeatherDataLoading.swift
 //  WeatherApp
 //
 //  Created by Phan Quyen on 19/08/2025.

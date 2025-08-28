@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setupInitialConfigurations() {
+
     }
 
     private func silenceWarnings() {

@@ -4,7 +4,6 @@
 //
 //  Created by Phan Quyen on 18/08/2025.
 //
-
 import UIKit
 
 class ForecastCollectionCell: UICollectionViewCell {
